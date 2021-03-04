@@ -48,12 +48,17 @@ void initMouse(void)
 		regs.x.dx=ymax;
 		int86(51,&regs,&regs);
 	}
+	
+	
 
-	mouseX=320,mouseY=240;
-	save_bk_mou(320,240);
-	mouse(mouseX,mouseY);
+	// mouseX=320,mouseY=240;
+	// save_bk_mou(320,240);
+	// mouse(mouseX,mouseY);
+	newmouse(&mouseX,&mouseY,&press);
+	
 	flag=1;
 	
+	//delay(2000);
 	
 	return;
 }
@@ -182,6 +187,8 @@ void clrmous(int nx,int ny)//Çå³ýÊó±ê
 		free(buffer);
 		flag=0;
 		setwritemode(COPY_PUT);
+		
+	
 	}
 }
 

@@ -85,6 +85,14 @@ void showMousePos(void);
 void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color);
 
 ///////////////////////////////////
+//函数名：inputPassword
+//功能：输入法【所用字体为（DEFAULT_FONT,HORIZ_DIR,3）//（3号默认字体）】
+//入口参数：起始位置的x,y坐标的地址，是否在输入法文本框内的标志，文本长度的地址，指向文本的字符串(这些变量都要在调用该函数的函数处定义好，把地址传进来),颜色
+//返回值：void
+///////////////////////////////////
+void inputPassword(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color);
+
+///////////////////////////////////
 //函数名：DiscardInput
 //功能：丢弃非输入法状态下的键盘输入
 //入口参数：void
@@ -114,7 +122,7 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
 //入口参数：void
 //返回值：void
 ///////////////////////////////////
-void playSound(void);
+// void playSound(void);
 
 
 #endif

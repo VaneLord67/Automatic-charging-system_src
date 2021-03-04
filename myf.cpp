@@ -147,6 +147,7 @@ void showMousePos(void)
 ///////////////////////////////////
 void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color)
 {
+	int maxLength = 12; //文本输入最大长度12
 	if(kbhit() != 0)
 	{
 		int ch = 0;			
@@ -181,30 +182,112 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 				(*inputFlag) = 0;
 				break;
 			default:
-				text[(*inputLength)] = ch;
-				(*inputLength)++;
-				memset(textTemp,'\0',sizeof(textTemp));
-				sprintf(textTemp,"%c",ch);
-				if((*x_input) < 550)
+				if((*inputLength) < maxLength)
 				{
-					clrmous(mouseX,mouseY);
-					settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-					setcolor(color);
-					outtextxy((*x_input),(*y_input),textTemp);
+					text[(*inputLength)] = ch;
+					(*inputLength)++;
+					memset(textTemp,'\0',sizeof(textTemp));
+					sprintf(textTemp,"%c",ch);
+					if((*x_input) < 550)
+					{
+						clrmous(mouseX,mouseY);
+						settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+						setcolor(color);
+						outtextxy((*x_input),(*y_input),textTemp);
 
+						save_bk_mou(mouseX,mouseY);
+						drawmous(mouseX,mouseY);
+
+						(*x_input) += 25;
+					}
+					// else
+					// {
+						// x = 5;
+						// y += 30;
+						// outtextxy(x,y,textTemp);
+						// x += 15;
+					// }
+					
+				}
+				break;
+				
+		}
+	}
+	
+	return;
+}
+
+///////////////////////////////////
+//函数名：inputPassword
+//功能：输入法【所用字体为（DEFAULT_FONT,HORIZ_DIR,3）//（3号默认字体）】
+//入口参数：起始位置的x,y坐标的地址，是否在输入法文本框内的标志，文本长度的地址，指向文本的字符串(这些变量都要在调用该函数的函数处定义好，把地址传进来),颜色
+//返回值：void
+///////////////////////////////////
+void inputPassword(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color)
+{
+	int maxLength = 12; //文本输入最大长度12
+	if(kbhit() != 0)
+	{
+		int ch = 0;			
+		char textTemp[1] = {'\0'};	
+		ch = getch();
+		switch(ch)
+		{
+			case 8:  						//退格键
+				if( (*inputLength) > 0)
+				{
+					text[(*inputLength) - 1] = '\0';
+					(*inputLength) -- ;
+					(*x_input) -= 25;
+					clrmous(mouseX,mouseY);
+					setfillstyle(SOLID_FILL,BLACK);
+					bar((*x_input),(*y_input),(*x_input)+25,(*y_input)+20);
 					save_bk_mou(mouseX,mouseY);
 					drawmous(mouseX,mouseY);
-
-					(*x_input) += 25;
+					if((*x_input) <= 5)
+					{
+						(*x_input) = 600;
+						if((*y_input) - 30 >= 240)
+						{
+							(*y_input) -= 30;
+						}
+					}
+					
 				}
-				// else
-				// {
-					// x = 5;
-					// y += 30;
-					// outtextxy(x,y,textTemp);
-					// x += 15;
-				// }
 				break;
+			case 13:						//回车
+			case 27:						//ESC
+				(*inputFlag) = 0;
+				break;
+			default:
+				if((*inputLength) < maxLength)
+				{
+					text[(*inputLength)] = ch;
+					(*inputLength)++;
+					memset(textTemp,'\0',sizeof(textTemp));
+					sprintf(textTemp,"%c",ch);
+					if((*x_input) < 550)
+					{
+						clrmous(mouseX,mouseY);
+						settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+						setcolor(color);
+						outtextxy((*x_input),(*y_input),"*");
+
+						save_bk_mou(mouseX,mouseY);
+						drawmous(mouseX,mouseY);
+
+						(*x_input) += 25;
+					}
+					// else
+					// {
+						// x = 5;
+						// y += 30;
+						// outtextxy(x,y,textTemp);
+						// x += 15;
+					// }
+				}
+				break;
+				
 		}
 	}
 	
@@ -336,53 +419,53 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 //入口参数：void
 //返回值：void
 ///////////////////////////////////
-void playSound(void)
-{
-	int freq[96]={784,660,588,660,523,523,
-	588,494,440,523,392,392,
-	330,392,440,523,784,440,523,392,
-	784,1048,880,784,660,784,588,588,
-	588,660,494,440,392,440,523,588,
-	330,523,440,392,440,523,392,392,
-	660,784,494,588,440,523,392,392,
-	330,392,330,392,392,440,494,588,440,440,392,440,
-	523,588,784,660,588,660,588,523,440,392,
-	330,523,440,523,440,392,330,392,440,523,
-	392,392,660,784,588,660,588,523,494,440,784,784};
-	int dely[96]={25,50,12,12,50,50,
-	25,50,12,12,50,50,
-	50,38,12,38,12,12,12,25,
-	38,12,12,12,12,12,50,50,
-	38,12,25,25,38,12,25,25,
-	25,25,12,12,12,12,50,50,
-	38,12,25,25,12,12,50,25,
-	12,12,12,12,12,12,12,12,50,25,12,12,
-	38,12,25,25,25,12,12,25,12,12,
-	50,50,12,12,12,12,12,12,12,12,
-	50,25,12,12,12,12,12,12,25,25,50,50};
-	while(1)
-	{
-		if(playIndex >= 96)
-		{
-			playIndex = 0;
-		}
-		sound(freq[playIndex]);  
-		end = clock();
-		total = (double)(end - start) / CLOCKS_PER_SEC;
-		if(total * 1000 >= (double)(10*dely[playIndex]))
-		{
-			start = clock();
-			playIndex++;
-			continue;
-		}
-		else
-		{
-			break;
-		}
-	}
+// void playSound(void)
+// {
+	// int freq[96]={784,660,588,660,523,523,
+	// 588,494,440,523,392,392,
+	// 330,392,440,523,784,440,523,392,
+	// 784,1048,880,784,660,784,588,588,
+	// 588,660,494,440,392,440,523,588,
+	// 330,523,440,392,440,523,392,392,
+	// 660,784,494,588,440,523,392,392,
+	// 330,392,330,392,392,440,494,588,440,440,392,440,
+	// 523,588,784,660,588,660,588,523,440,392,
+	// 330,523,440,523,440,392,330,392,440,523,
+	// 392,392,660,784,588,660,588,523,494,440,784,784};
+	// int dely[96]={25,50,12,12,50,50,
+	// 25,50,12,12,50,50,
+	// 50,38,12,38,12,12,12,25,
+	// 38,12,12,12,12,12,50,50,
+	// 38,12,25,25,38,12,25,25,
+	// 25,25,12,12,12,12,50,50,
+	// 38,12,25,25,12,12,50,25,
+	// 12,12,12,12,12,12,12,12,50,25,12,12,
+	// 38,12,25,25,25,12,12,25,12,12,
+	// 50,50,12,12,12,12,12,12,12,12,
+	// 50,25,12,12,12,12,12,12,25,25,50,50};
+	// while(1)
+	// {
+		// if(playIndex >= 96)
+		// {
+			// playIndex = 0;
+		// }
+		// sound(freq[playIndex]);  
+		// end = clock();
+		// total = (double)(end - start) / CLOCKS_PER_SEC;
+		// if(total * 1000 >= (double)(10*dely[playIndex]))
+		// {
+			// start = clock();
+			// playIndex++;
+			// continue;
+		// }
+		// else
+		// {
+			// break;
+		// }
+	// }
 	
-	return;
-}
+	// return;
+// }
 
 
 

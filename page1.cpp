@@ -33,10 +33,6 @@ int p1(void)
 	
 	while(page == 1)
 	{
-		if(1 == isPlaySound)
-		{			
-			playSound();
-		}
 		newmouse(&mouseX,&mouseY,&press);
 
 		showMousePos();
@@ -47,7 +43,7 @@ int p1(void)
 		}
 		else if(1 == isInPasswordText)
 		{
-			inputText(&x_PasswordTextInput,&y_PasswordTextInput,&isInPasswordText, &passwordTextLength,passwordText,DARKGRAY);
+			inputPassword(&x_PasswordTextInput,&y_PasswordTextInput,&isInPasswordText, &passwordTextLength,passwordText,DARKGRAY);
 		}
 		else
 		{

@@ -14,10 +14,6 @@ int p0(void)
 	
 	while(page == 0)
 	{
-		// if(1 == isPlaySound)
-		// {
-			// playSound();
-		// }
 		newmouse(&mouseX,&mouseY,&press);
 		showMousePos();
 		
@@ -27,7 +23,6 @@ int p0(void)
 		}
 		else if(mouse_press(413,303,564,404) == 1)        //点击退出按钮
 		{
-			nosound();
 			page = 3;
 		}
 		else if(mouse_press(47,303,198,404) == 1)			//点击登录按钮

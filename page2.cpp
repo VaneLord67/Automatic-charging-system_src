@@ -24,7 +24,7 @@ int p2(void)
 	int passwordTextLength = 0;
 	
 	int x_userTextInput = 250;
-	int y_userTextInput = 100;;
+	int y_userTextInput = 100;
 	
 	int x_PasswordTextInput = 250;
 	int y_PasswordTextInput = 213;
@@ -35,10 +35,6 @@ int p2(void)
 	{
 		newmouse(&mouseX,&mouseY,&press);
 		showMousePos();
-		if(1 == isPlaySound)
-		{
-			playSound();
-		}
 		
 		if(1 == isInUserText)
 		{
@@ -47,7 +43,7 @@ int p2(void)
 		}
 		else if(1 == isInPasswordText)
 		{
-			inputText(&x_PasswordTextInput,&y_PasswordTextInput,&isInPasswordText, &passwordTextLength,passwordText,DARKGRAY);
+			inputPassword(&x_PasswordTextInput,&y_PasswordTextInput,&isInPasswordText, &passwordTextLength,passwordText,DARKGRAY);
 		}
 		else
 		{
@@ -114,7 +110,7 @@ int p2(void)
 			{
 				if(1 == loginFlag)
 				{
-					page = 4;
+					page = 5;
 				}
 			}
 		}
