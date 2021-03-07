@@ -7,13 +7,17 @@
 
 int p4(PCAR pCar)
 {
+	//这两个功能变量用于弹窗
 	int isPopWindow = 0;
 	void * buf;
 	
 	int page = 4;
+	
 	int electricityTemp = pCar->electricityLeft;
 	int hasMileageTemp = pCar->hasMileage;
+	
 	int total = 0; 	//时间之差
+	
 	char electricityStringTemp[5];
 	char hasMileageStringTemp[20];
 	itoa(electricityTemp,electricityStringTemp,10);
@@ -50,8 +54,16 @@ int p4(PCAR pCar)
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 			break;
+		//非常规情况置为熄火状态
 		default:
 			pCar->runState = 0;
+			
+			clrmous(mouseX,mouseY);
+			setfillstyle(SOLID_FILL,GREEN);
+			bar(530, 104, 602, 137);
+			printHZ(370+80+80,104,"熄火",32,YELLOW);
+			save_bk_mou(mouseX,mouseY);
+			drawmous(mouseX,mouseY);
 			break;
 	}
 	
@@ -187,9 +199,9 @@ int p4(PCAR pCar)
 				page = 6;					
 			}
 			
-			if(mouse_press(370, 104+50+50+50+50,511,339) == 1)
+			if(mouse_press(370, 104+50+50+50+50,511,339) == 1)			//个人中心（有行驶记录查询功能）
 			{
-				page = 8;
+				page = 8;				
 			}
 			
 			if(mouse_press(401,409,508,459) == 1)			//退出

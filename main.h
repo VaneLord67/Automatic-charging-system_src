@@ -10,6 +10,7 @@
 #include"page7.h"
 #include"page8.h"
 #include"page9.h"
+#include"page10.h"
 #include"logo.h"
 
 

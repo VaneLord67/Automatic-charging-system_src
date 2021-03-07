@@ -74,6 +74,9 @@ int main(void)
 			case 9:
 				page = p9();			//行驶记录查询
 				break;
+			case 10:					//一键充电界面
+				page = p10(pCar);
+				break;
 			default:
 				page = 0;			//出现其他异常情况退回到初始界面
 				break;

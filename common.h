@@ -17,6 +17,7 @@
 
 #define SHOWMOUSE
 #define DEBUGMODE
+#define MAX_ELECTRICITY 70
 
 
 

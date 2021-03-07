@@ -15,6 +15,9 @@ int p7(PCAR pCar)
 {
 	int page = 7;
 	
+	int isPopWindow = 0;
+	void * buf = NULL;
+	
 	change_page(page7_screen);
 	
 	while(page == 7)
@@ -24,25 +27,46 @@ int p7(PCAR pCar)
 		showMousePos();
 		#endif
 		
-		if(mouse_press(235,160,380,196) == 1)			//一键充电
+		if(0 == isPopWindow)
 		{
-			pCar->electricityLeft = 70;
+			if(mouse_press(235,160,380,196) == 1)			//一键充电
+			{
+				if(pCar->electricityLeft >= MAX_ELECTRICITY)
+				{
+					popWindow_withoutFlush(&buf, &isPopWindow, "电量已满");
+					continue;
+				}
+				page = 10;
+			}
+			
+			if(mouse_press(235,160+50+50,379,397) == 1)		//一键换电
+			{
+				delay(200);	//防止连点
+				if(pCar->electricityLeft >= MAX_ELECTRICITY)
+				{
+					popWindow_withoutFlush(&buf, &isPopWindow, "电量已满");
+					continue;
+				}
+				pCar->electricityLeft = 70;
+			}
+			
+			if(mouse_press(401,409,508,459) == 1)			//退出
+			{
+				page = 3;
+			}
+			
+			if(mouse_press(123,409,230,459) == 1)			//返回
+			{
+				page = 4;
+			}
+				
+		}
+		else
+		{
+			popWindow_withoutFlush(&buf, &isPopWindow, "");
 		}
 		
-		if(mouse_press(235,160+50+50,379,397) == 1)		//一键换电
-		{
-			pCar->electricityLeft = 70;
-		}
 		
-		if(mouse_press(401,409,508,459) == 1)			//退出
-		{
-			page = 3;
-		}
-		
-		if(mouse_press(123,409,230,459) == 1)			//返回
-		{
-			page = 4;
-		}
 		
 	}
 	

@@ -380,6 +380,7 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 		//delay(200);
 		
 		setcolor(BLACK);
+		setfillstyle(SOLID_FILL,BLACK);
 		bar(166,100,474,344); 	//清除弹窗后面的背景
 		setcolor(DARKGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -412,6 +413,8 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 			
 			(*buf) = NULL;
 			(*isPopWindow) = 0;
+			
+			delay(200);
 		}		
 	}
 	
