@@ -47,7 +47,7 @@ int p7(PCAR pCar)
 					popWindow_withoutFlush(&buf, &isPopWindow, "电量已满");
 					continue;
 				}
-				pCar->electricityLeft = 70;
+				page = 11;
 			}
 			
 			if(mouse_press(401,409,508,459) == 1)			//退出

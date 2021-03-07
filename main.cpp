@@ -77,6 +77,9 @@ int main(void)
 			case 10:					//一键充电界面
 				page = p10(pCar);
 				break;
+			case 11:
+				page = p11(pCar);
+				break;
 			default:
 				page = 0;			//出现其他异常情况退回到初始界面
 				break;

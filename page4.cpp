@@ -3,6 +3,7 @@
 ////////////////
 
 #include"common.h"
+#include"main.h"
 #include"page4.h"
 
 int p4(PCAR pCar)
@@ -191,6 +192,7 @@ int p4(PCAR pCar)
 			
 			if(mouse_press(370,104+50+50,513,239) == 1)							//电量模块
 			{
+				pCar->runState = 0;
 				page = 7;
 			}
 			
@@ -212,6 +214,7 @@ int p4(PCAR pCar)
 			if(mouse_press(123,409,230,459) == 1)			//注销
 			{
 				recordWrite(pCar->id,pCar);
+				electricityWrite(pCar);
 				pCar->loginFlag = 0;
 				page = 0;
 			}

@@ -3,15 +3,15 @@
 ////////////////
 
 #include"common.h"
-#include"page10.h"
+#include"page11.h"
 
 /*
-函数名：p10
-功能：一键充电界面
+函数名：p11
+功能：一键换电界面
 入口参数：汽车结构体变量pCar
 返回值：int类型，返回page的值
 */
-int p10(PCAR pCar)
+int p11(PCAR pCar)
 {
 	#ifdef DEBUGMODE
 	//pCar->electricityLeft = 10;
@@ -21,7 +21,7 @@ int p10(PCAR pCar)
 	void * p = NULL;
 	void * buf = NULL;
 	unsigned int size = 0;
-	int page = 10;
+	int page = 11;
 	int start = clock();			//起始时间
 	int temp;			//临时时间
 	int total = 0; 	//时间之差
@@ -30,21 +30,23 @@ int p10(PCAR pCar)
 	// int chargeTemp;
 	// int total = 0;
 	
-	double percentage = (double)pCar->electricityLeft / MAX_ELECTRICITY;		//充电百分比
+	//double percentage = (double)pCar->electricityLeft / MAX_ELECTRICITY;		//充电百分比
 	
-	change_page(page10_screen);
+	change_page(page11_screen);
 	
 	clrmous(mouseX,mouseY);
 
 	
-	
+	//进度条
+	// setfillstyle(SOLID_FILL,GREEN);
+	// bar(176,339,(457-176)*percentage+176,388);
 	
 	printHZ_withoutRec(106,270,"正在为您指派机器人。。。",32,DARKGRAY);
 	delay(2000);
 	setfillstyle(SOLID_FILL,BLACK);
 	bar(106,270,545,316);
 	printHZ_withoutRec(106,270,"机器人正在前往汽车。。。",32,DARKGRAY);
-
+	//delay(2000);
 	setcolor(DARKGRAY);
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	line(64,246,543,246);
@@ -58,8 +60,7 @@ int p10(PCAR pCar)
 	line(216+235,177,202+235,245);
 	
 	delay(2000);
-	
-	
+
 	while(1)
 	{
 		temp = clock();
@@ -86,25 +87,23 @@ int p10(PCAR pCar)
 	
 	delay(1000);
 	bar(106,270,545,316);
-	printHZ_withoutRec(106,270,"机器人正在为车充电。。。",32,DARKGRAY);
+	printHZ_withoutRec(106,270,"机器人正在为车换电。。。",32,DARKGRAY);
 	
+	delay(2000);
 	
-	//进度条
-	setcolor(DARKGRAY);
-	rectangle(176,339,457,388);				//充电进度条边框
+	pCar->electricityLeft = MAX_ELECTRICITY;
 	
-	setfillstyle(SOLID_FILL,GREEN);
-	bar(176,339,(457-176)*percentage+176,388);
+	// bar(106,270,545,316);
+	// printHZ_withoutRec(106,270,"机器人正在为车换电。。。",32,DARKGRAY);
 	
-	delay(1000);
 	
 	#ifdef DEBUGMODE
-	char output[50] = {'\0'};
-	sprintf(output,"%lf",percentage);
+	//char output[50] = {'\0'};
+	//sprintf(output,"%lf",percentage);
 	//printText_withoutRec(20, 82,output,3,DARKGRAY);
 	#endif
 	
-	while(page == 10)
+	while(page == 11)
 	{
 		newmouse(&mouseX,&mouseY,&press);
 		#ifdef SHOWMOUSE
@@ -129,28 +128,12 @@ int p10(PCAR pCar)
 		
 		if(0 == isPopWindow)
 		{
-			if(total >= 1 && pCar->electricityLeft < MAX_ELECTRICITY)
+			
+			if(pCar->electricityLeft == MAX_ELECTRICITY)
 			{
-				//防止电量溢出
-				if(pCar->electricityLeft + 5 <= MAX_ELECTRICITY)
-				{				
-					pCar->electricityLeft += 5;
-				}
-				else
-				{
-					pCar->electricityLeft = MAX_ELECTRICITY;
-				}
-				percentage = (double)pCar->electricityLeft / MAX_ELECTRICITY;
-				setfillstyle(SOLID_FILL,GREEN);
-				bar(176,339,(457-176)*percentage+176,388);
-				
-				if(pCar->electricityLeft == MAX_ELECTRICITY)
-				{
-					popWindow_withoutFlush(&p, &isPopWindow, "电已充满");	
-				}
-				
-				start = clock();
+				popWindow_withoutFlush(&p, &isPopWindow, "电已充满");	
 			}
+			
 			
 			if(mouse_press(401,409,508,459) == 1)			//退出
 			{
@@ -182,19 +165,20 @@ int p10(PCAR pCar)
 
 
 /*
-函数名：page10_screen
+函数名：page11_screen
 功能：绘制一键充电界面
 入口参数：void
 返回值：void
 */
-void page10_screen(void)
+void page11_screen(void)
 {
 	cleardevice();
 	setbkcolor(WHITE);
-	printHZ_withoutRec(200,20,"一键充电",48,DARKGRAY);
+	printHZ_withoutRec(200,20,"一键换电",48,DARKGRAY);
 	//printHZ(200,160,"行驶记录查询",32,DARKGRAY);
 	
-	
+	// setcolor(DARKGRAY);
+	// rectangle(176,339,457,388);				//充电进度条边框
 	
 	
 	printHZ(122, 408,"中止",48,DARKGRAY);
