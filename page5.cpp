@@ -26,8 +26,14 @@ int p5(PCAR pCar)
 		newmouse(&mouseX,&mouseY,&press);
 		showMousePos();
 		
-		changeToOn(108,104,186,145,&(pCar->airConditioningFlag));
-		changeToOff(108+78,104,186+78,145,&(pCar->airConditioningFlag));
+		if(changeToOn(108,104,186,145,&(pCar->airConditioningFlag)) == 1)	
+		{
+			pCar->kEquipment = pCar->kEquipment - 1;
+		}
+		if(changeToOff(108+78,104,186+78,145,&(pCar->airConditioningFlag)) == 1)
+		{
+			pCar->kEquipment = pCar->kEquipment + 1;
+		}
 		changeToOn(108,104+100,186,145+100,&(pCar->lightFlag));
 		changeToOff(108+78,104+100,186+78,145+100,&(pCar->lightFlag));
 		changeToOn(108+300,104,186+300,145,&(pCar->windowFlag));
@@ -35,15 +41,26 @@ int p5(PCAR pCar)
 		changeToOn(108+300,104+100,186+300,145+100,&(pCar->musicFlag));
 		changeToOff(108+78+300,104+100,186+78+300,145+100,&(pCar->musicFlag));
 		
-		if(mouse_press(413,303,564,404) == 1)        //点击退出按钮
+		
+		
+		// if(mouse_press(413,303,564,404) == 1)        //点击退出按钮
+		// {
+			// page = 3;
+		// }
+		
+		// if(mouse_press(237, 303, 388, 404) == 1)      //点击返回按钮
+		// {
+			// page = 4;
+		// }
+		
+		if(mouse_press(401,409,508,459) == 1)			//退出
 		{
-			// nosound();
 			page = 3;
 		}
 		
-		if(mouse_press(237, 303, 388, 404) == 1)      //点击返回按钮
+		if(mouse_press(123,409,230,459) == 1)			//返回
 		{
-			page = 0;
+			page = 4;
 		}
 	}
 	
@@ -63,18 +80,23 @@ void page5_screen(void)
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	setcolor(DARKGRAY);
 	
-	printHZ(200,20,"中控模块",48,DARKGRAY);
+	printHZ_withoutRec(200,20,"中控功能",48,DARKGRAY);
 	printHZ_withoutRec(26, 100,"空调",24,DARKGRAY);
 	printHZ_withoutRec(26, 200,"车灯",24,DARKGRAY);
 	printHZ_withoutRec(26+300, 100,"天窗",24,DARKGRAY);
 	printHZ_withoutRec(26+300, 200,"音乐",24,DARKGRAY);
 	
+
+	
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	setcolor(DARKGRAY);
-	rectangle(237,303,388,404);
-	rectangle(413,303,564,404);
-	puthz(251,319,"返回",48,52,DARKGRAY);
-	puthz(429,319,"退出",48,52,DARKGRAY);
+	// rectangle(237,303,388,404);
+	// rectangle(413,303,564,404);
+	// puthz(251,319,"返回",48,52,DARKGRAY);
+	// puthz(429,319,"退出",48,52,DARKGRAY);
+	
+	printHZ(122, 408,"返回",48,DARKGRAY);
+	printHZ(400, 408,"退出",48,DARKGRAY);
 	
 	return;
 }
@@ -83,9 +105,9 @@ void page5_screen(void)
 函数名：changeToOn
 功能：切换至开启状态
 入口参数：矩形框位置，标志地址
-返回值：void
+返回值：int，切换返回1，未切换返回0
 */
-void changeToOn(int x1,int y1,int x2,int y2,int* flag)
+int changeToOn(int x1,int y1,int x2,int y2,int* flag)
 {
 	if(mouse_press(x1,y1,x2,y2) == 1 && 0 == (*flag))
 	{
@@ -105,17 +127,18 @@ void changeToOn(int x1,int y1,int x2,int y2,int* flag)
 		
 		save_bk_mou(mouseX,mouseY);
 		drawmous(mouseX,mouseY);
-		
+		return 1;
 	}
+	return 0;
 }
 
 /*
 函数名：changeToOff
-功能：切换至开启状态
+功能：切换至关闭状态
 入口参数：矩形框位置，标志地址
-返回值：void
+返回值：int，切换返回1，未切换返回0
 */
-void changeToOff(int x1,int y1,int x2,int y2,int* flag)
+int changeToOff(int x1,int y1,int x2,int y2,int* flag)
 {
 	if(mouse_press(x1,y1,x2,y2) == 1 && 1 == (*flag))
 	{
@@ -137,8 +160,9 @@ void changeToOff(int x1,int y1,int x2,int y2,int* flag)
 		
 		save_bk_mou(mouseX,mouseY);
 		drawmous(mouseX,mouseY);
-		
+		return 1;
 	}
+	return 0;
 	
 	
 }

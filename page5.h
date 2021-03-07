@@ -37,17 +37,18 @@ void stateDraw(int x1,int y1,int x2,int y2,int * flag);
 函数名：changeToOn
 功能：切换至开启状态
 入口参数：矩形框位置，标志地址
-返回值：void
+返回值：int，切换返回1，未切换返回0
 */
-void changeToOn(int x1,int y1,int x2,int y2,int* flag);
+int changeToOn(int x1,int y1,int x2,int y2,int* flag);
+
 
 /*
 函数名：changeToOff
-功能：切换至开启状态
+功能：切换至关闭状态
 入口参数：矩形框位置，标志地址
-返回值：void
+返回值：int，切换返回1，未切换返回0
 */
-void changeToOff(int x1,int y1,int x2,int y2,int* flag);
+int changeToOff(int x1,int y1,int x2,int y2,int* flag);
 
 
 #endif

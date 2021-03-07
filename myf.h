@@ -1,6 +1,36 @@
 #ifndef _MY_F_H_
 #define _MY_F_H_
 
+//汽车结构声明
+typedef struct car
+{
+	int electricityLeft;	//剩余电量
+	int hasMileage; //已行驶里程
+	
+	//下列四种状态0为关闭，1为开启
+	int airConditioningFlag; //空调状态
+	int lightFlag;			//车灯状态
+	int windowFlag;			//车窗状态
+	int musicFlag; 			//音乐播放器状态
+	
+	int runState;			//行驶状态（熄火0、行驶1、制动2）
+	int temperature;		//汽车温度
+	int speed;				//汽车速度(60km/h)
+	int k;					//数学模型k值
+	int kEquipment;			//数学模型中设备对应的k
+	int b;					//数学模型b值
+	int loginFlag;			//登录状态，0未登录，1已登录
+	
+	//通过时间用来计算行驶里程的变量
+	int start;				//起始时间
+	int temp;				//临时时间
+	
+	tm info;				//行驶记录起始时间
+	char id[20];			//汽车的id（即登录时的用户名）
+}CAR,*PCAR;
+
+
+
 extern void *buffer;
 extern union REGS regs;
 
@@ -9,11 +39,6 @@ extern int mouseY;
 extern int press;
 extern int flag;
 
-extern int playIndex;
-extern int isPlaySound;
-extern clock_t start;
-extern clock_t end;
-extern double total;
 
 ///////////////////////////////////
 //函数名：printHZ
@@ -115,6 +140,34 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s);
 //返回值：void
 ///////////////////////////////////
 void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
+
+
+//函数名：recordOut
+//功能：回到初始界面/退出程序 后写入时间到record.txt
+//入口参数：void
+//返回值：void
+///////////////////////////////////
+void recordOut(void);
+
+
+
+
+// /*
+// 函数名：recordIn
+// 功能：登录时写入时间到record.txt
+// 入口参数：id,汽车结构体变量pCar
+// 返回值：void
+// */
+//void recordIn(char *p,PCAR pCar);
+
+///////////////////////////////////
+//函数名：recordWrite
+//功能：写行驶记录到record.txt
+//入口参数：id,汽车结构体变量pCar
+//返回值：void
+///////////////////////////////////
+void recordWrite(char * p,PCAR pCar);
+
 
 ///////////////////////////////////
 //函数名：playSound

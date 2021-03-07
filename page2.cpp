@@ -7,13 +7,14 @@
 /*
 函数名：p2
 功能：登录界面的功能
-入口参数：void
+入口参数：汽车结构体指针pCar
 返回值：int类型，返回page的值
 */
-int p2(void)
+int p2(PCAR pCar)
 {
 	int page = 2;
 	
+	time_t now = time(0);
 	char userText[20] = {'\0'};
 	char passwordText[20] = {'\0'};
 	int loginFlag = 0;
@@ -82,6 +83,10 @@ int p2(void)
 			{
 				if( (loginFlag = Login(userText,passwordText)) == 1 )
 				{
+					pCar->info = *localtime(&now);
+					strcpy(pCar->id,userText);
+					// recordIn(userText,pCar);
+					pCar->loginFlag = 1;
 					popWindow(page2_screen,&isPopWindow,"登录成功");
 				}
 				else
@@ -110,7 +115,7 @@ int p2(void)
 			{
 				if(1 == loginFlag)
 				{
-					page = 5;
+					page = 4;
 				}
 			}
 		}

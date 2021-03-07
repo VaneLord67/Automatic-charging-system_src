@@ -6,6 +6,8 @@
 #include"myf.h"
 #define HZ_OFFSET 4 		//汉字的偏移量
 
+
+
 ///////////////////////////////////
 //函数名：printHZ
 //功能：在x,y处打印s指向的汉字字符串(带矩形框)
@@ -29,10 +31,10 @@ void printHZ(int x, int y,char *s,int flag,int color)
 	int length = strlen(s) / 2;
 	int part = flag + HZ_OFFSET;
 	
-	setcolor(BLACK);
+	setcolor(DARKGRAY);
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 
-	rectangle(x,y,x+flag*length+2,y+flag);
+	rectangle(x,y,x+flag*length*1.1+2,y+flag);
 	puthz(x,y,s,flag,part,color);
 	
 	return;
@@ -163,7 +165,7 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 					(*x_input) -= 25;
 					clrmous(mouseX,mouseY);
 					setfillstyle(SOLID_FILL,BLACK);
-					bar((*x_input),(*y_input),(*x_input)+20,(*y_input)+20);
+					bar((*x_input),(*y_input),(*x_input)+20,(*y_input)+24);
 					save_bk_mou(mouseX,mouseY);
 					drawmous(mouseX,mouseY);
 					if((*x_input) <= 5)
@@ -325,7 +327,7 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s)
 		setcolor(DARKGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 		rectangle(166,100,474,344);
-		printHZ_withoutRec(220, 150,s,48,YELLOW);
+		printHZ_withoutRec(220, 150,s,48,DARKGRAY);
 		rectangle(232,236,414,306);
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,5);
 		outtextxy(285,250,"OK");
@@ -379,7 +381,7 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 		setcolor(DARKGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 		rectangle(166,100,474,344);
-		printHZ_withoutRec(220, 150,s,48,YELLOW);
+		printHZ_withoutRec(220, 150,s,48,DARKGRAY);
 		rectangle(232,236,414,306);
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,5);
 		outtextxy(285,250,"OK");
@@ -412,6 +414,208 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 	
 	return;
 }
+
+
+/*
+函数名：recordWrite
+功能：写行驶记录到record.txt
+入口参数：id,汽车结构体变量pCar
+返回值：void
+*/
+void recordWrite(char * p,PCAR pCar)
+{
+	time_t now;
+	FILE* fp;
+	now = time(0);
+	tm info = *localtime(&now);
+	int year = info.tm_year + 1900;
+	int month = info.tm_mon + 1;
+	int day = info.tm_mday;
+	int hour = info.tm_hour;
+	int minute = info.tm_min;
+	char ch;
+	char temp[80] = {'\0'};
+	int length = 0;
+	int max = 0;
+	
+	if ((fp = fopen("record.txt", "r")) == NULL)
+	{
+		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
+		outtextxy(10,10,"Can't open file!Press any key to quit...");
+		getch();
+		exit(1);
+	}
+	
+	while ( (ch = getc(fp)) != EOF)
+	{
+		if (ch == '[')
+		{
+			memset(temp, '\0', sizeof(temp));
+			length = 0;
+			while ( (ch = getc(fp)) != ']')
+			{
+				temp[length] = ch;
+				length++;
+			}
+		}
+		if (max < atoi(temp))
+		{
+			max = atoi(temp);
+		}
+	}
+	
+	fclose(fp);
+	
+	if ((fp = fopen("record.txt", "a")) == NULL)
+	{
+		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
+		outtextxy(10,10,"Can't open file!Press any key to quit...");
+		getch();
+		exit(1);
+	}
+	
+	fprintf(fp, "[%d]\nUSER:%s\n", max + 1, p);
+	fprintf(fp,"DIST:%d\n",pCar->hasMileage);
+	//fprintf(fp,"ELEL:\n",pCar->electricityLeft);
+	fprintf(fp, "TIME:");
+	fprintf(fp, "%d/%d/%d/%d:%d  -  ", pCar->info.tm_year + 1900, pCar->info.tm_mon + 1, pCar->info.tm_mday, pCar->info.tm_hour, pCar->info.tm_min);	
+
+	
+	fprintf(fp, "%d/%d/%d/%d:%d\n", year, month, day, hour, minute);	
+
+	fclose(fp);
+
+	return;
+}
+
+// /*
+// 函数名：recordOut
+// 功能：回到初始界面/退出程序 后写入时间到record.txt
+// 入口参数：void
+// 返回值：void
+// */
+// void recordOut(void)
+// {
+	// time_t now;
+	// FILE* fp;
+	// now = time(0);
+	// tm info = *localtime(&now);
+	// int year = info.tm_year + 1900;
+	// int month = info.tm_mon + 1;
+	// int day = info.tm_mday;
+	// int hour = info.tm_hour;
+	// int minute = info.tm_min;
+	// //int second = info.tm_sec;
+
+	// if ((fp = fopen("record.txt", "a")) == NULL)
+	// {
+		// fprintf(stderr, "打开文件出错！\n");
+		// exit(EXIT_FAILURE);
+	// }
+
+	// fprintf(fp, "%d/%d/%d/%d:%d\n", year, month, day, hour, minute);
+
+	// //fprintf(stdout, "行驶记录录入成功！\n");
+
+	// fclose(fp);
+
+	// return;
+// }
+
+
+// /*
+// 函数名：recordIn
+// 功能：登录时写入时间到record.txt
+// 入口参数：id,汽车结构体变量pCar
+// 返回值：void
+// */
+// void recordIn(char * p,PCAR pCar)
+// {
+	// time_t now;
+	// FILE* fp;
+	// char ch;
+	// char temp[80] = {'\0'};
+	// int length = 0;
+	// int max = 0;
+	// now = time(0);
+	// pCar->info = *localtime(&now);
+	// int year = pCar->info.tm_year + 1900;
+	// int month = pCar->info.tm_mon + 1;
+	// int day = pCar->info.tm_mday;
+	// int hour = pCar->info.tm_hour;
+	// int minute = pCar->info.tm_min;
+	// //int second = info.tm_sec;
+	
+	// if ((fp = fopen("record.txt", "r")) == NULL)
+	// {
+		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
+		// outtextxy(10,10,"Can't open file!Press any key to quit...");
+		// getch();
+		// exit(1);
+	// }
+	
+	// while ( (ch = getc(fp)) != EOF)
+	// {
+		// if (ch == '[')
+		// {
+			// memset(temp, '\0', sizeof(temp));
+			// length = 0;
+			// while ( (ch = getc(fp)) != ']')
+			// {
+				// temp[length] = ch;
+				// length++;
+			// }
+		// }
+		// if (max < atoi(temp))
+		// {
+			// max = atoi(temp);
+		// }
+	// }
+	
+	// fclose(fp);
+	
+	// if ((fp = fopen("record.txt", "a")) == NULL)
+	// {
+		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
+		// outtextxy(10,10,"Can't open file!Press any key to quit...");
+		// getch();
+		// exit(1);
+	// }
+	// fprintf(fp, "[%d]\nUSER:%s\n", max + 1, p);
+	// fprintf(fp,"DIST:%d\n",pCar->hasMileage);
+	// //fprintf(fp,"ELEL:\n",pCar->electricityLeft);
+	// fprintf(fp, "TIME:");
+	// fprintf(fp, "%d/%d/%d/%d:%d  -  ", year, month, day, hour, minute);	
+	
+	// fclose(fp);
+	
+	
+	// if ((fp = fopen("record.txt", "a")) == NULL)
+	// {
+		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
+		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
+		// outtextxy(10,10,"Can't open file!Press any key to quit...");
+		// getch();
+		// exit(1);
+	// }
+
+	// fprintf(fp, "%d/%d/%d/%d:%d\n", year, month, day, hour, minute);
+	
+
+	// //fprintf(stdout, "行驶记录录入成功！\n");
+
+	// fclose(fp);
+
+	// return;
+// }
+
+
+
+
 
 ///////////////////////////////////
 //函数名：playSound

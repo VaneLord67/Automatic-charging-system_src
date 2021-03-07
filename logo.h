@@ -1,5 +1,5 @@
-#ifndef _PAGE4_H_
-#define _PAGE4_H_
+#ifndef _logo_H_
+#define _logo_H_
 
 extern void *buffer;
 extern union REGS regs;
@@ -10,7 +10,6 @@ extern int press;
 extern int flag;
 
 
-void page4_screen(void);
-int p4(PCAR pCar);
+void logo_screen(void);
 
 #endif

@@ -61,3 +61,6 @@ PASSWORD:123
 [21]
 ID:asdd
 PASSWORD:1234
+[22]
+ID:admin
+PASSWORD:admin

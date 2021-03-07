@@ -84,6 +84,7 @@ int p1(void)
 				if( Register(userText,passwordText) == 1 )
 				{
 					popWindow_withoutFlush(&buf, &isPopWindow, "注册成功");
+					page = 4;			//注册成功后跳转数据显示界面
 				}
 				else
 				{
