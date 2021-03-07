@@ -33,6 +33,10 @@ int main(void)
 		switch(page)
 		{
 			case 0:   //初始界面
+				//每到初始界面就重新生成一辆车，防止两个用户对同一个内存进行操作
+				free(pCar);
+				PCAR pCar = (PCAR)malloc(sizeof(CAR));
+				initCar(pCar);			//初始化汽车参数
 				//recordOut();
 				page = p0();
 				break;
@@ -87,6 +91,7 @@ int main(void)
 */
 void initCar(PCAR pCar)
 {
+	//读取energy.txt中的剩余电量
 	FILE * fp = NULL;
 	char temp[80] = {'\0'};
 	fp = fopen("energy.txt","r");
@@ -101,7 +106,7 @@ void initCar(PCAR pCar)
 	fgets(temp,80,fp);
 	pCar->electricityLeft = atoi(temp);
 	//fscanf(fp,"%d",pCar->electricityLeft);
-	//pCar->electricityLeft = 70;	//剩余电量
+	//pCar->electricityLeft = 70;	//剩余电量(现改为从文件energy.txt中读)
 	pCar->hasMileage = 0;			//行驶里程
 	pCar->airConditioningFlag = 0; //空调状态
 	pCar->lightFlag = 0;			//车灯状态

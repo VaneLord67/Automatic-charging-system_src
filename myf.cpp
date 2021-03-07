@@ -360,6 +360,7 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 	{
 		size=imagesize(166,100,474,344);
 		(*buf)=malloc(size);
+		clrmous(mouseX,mouseY);
 		if((*buf)!=NULL)
 		{
 			getimage(166,100,474,344,(*buf));
@@ -372,9 +373,11 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 			delay(1000);
 			exit(-1);
 		}
+		// save_bk_mou(mouseX,mouseY);
+		// drawmous(mouseX,mouseY);
 		
 		clrmous(mouseX,mouseY);
-		// delay(100);
+		//delay(200);
 		
 		setcolor(BLACK);
 		bar(166,100,474,344); 	//清除弹窗后面的背景

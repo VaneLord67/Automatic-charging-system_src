@@ -64,3 +64,9 @@ PASSWORD:1234
 [22]
 ID:admin
 PASSWORD:admin
+[23]
+ID:dos
+PASSWORD:dos
+[24]
+ID:dos1
+PASSWORD:dos
