@@ -48,7 +48,18 @@ int p9(void)
 			{
 				pageCurrent -= 1;
 				setfillstyle(SOLID_FILL,BLACK);
-				bar(30,90,383,347);
+				bar(20,90,383,347);
+				findRecord(pageCurrent);
+				bar(222,360,310,388);
+				sprintf(pageCurrentString,"%d",pageCurrent);
+				printText_withoutRec(250,360,pageCurrentString,3,DARKGRAY);
+				delay(200);
+			}
+			else if(pageCurrent == 1)
+			{
+				pageCurrent = maxPage;
+				setfillstyle(SOLID_FILL,BLACK);
+				bar(20,90,383,347);
 				findRecord(pageCurrent);
 				bar(222,360,310,388);
 				sprintf(pageCurrentString,"%d",pageCurrent);
@@ -69,6 +80,18 @@ int p9(void)
 				sprintf(pageCurrentString,"%d",pageCurrent);
 				printText_withoutRec(250,360,pageCurrentString,3,DARKGRAY);
 				delay(200);
+			}
+			else if(pageCurrent == maxPage)
+			{
+				pageCurrent = 1;
+				setfillstyle(SOLID_FILL,BLACK);
+				bar(20,90,383,347);				//刷新界面
+				findRecord(pageCurrent);
+				bar(222,360,310,388);			//刷新当前页数
+				sprintf(pageCurrentString,"%d",pageCurrent);
+				printText_withoutRec(250,360,pageCurrentString,3,DARKGRAY);
+				delay(200);
+				
 			}
 		}
 		

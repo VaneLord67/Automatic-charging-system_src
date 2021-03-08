@@ -102,6 +102,32 @@ int p4(PCAR pCar)
 					pCar->start = clock();
 				}
 			}
+			else if(pCar->runState == 2)
+			{
+				pCar->temp = clock();
+				total = (double)(pCar->temp - pCar->start) / CLOCKS_PER_SEC;
+				if(total >= 1)
+				{
+					pCar->electricityLeft -= (total * pCar->speed) / (pCar->k + pCar->kEquipment);
+					if(pCar->electricityLeft < 0)
+					{
+						pCar->electricityLeft = 0;
+						pCar->runState = 0;
+						clrmous(mouseX,mouseY);
+						setfillstyle(SOLID_FILL,BLACK);
+						bar(370, 104,602, 137);
+						setfillstyle(SOLID_FILL,GREEN);
+						bar(530, 104, 602, 137);
+						printHZ(370+80+80,104,"Ï¨»ð",32,YELLOW);
+						printHZ(370,104,"ÐÐÊ»",32,DARKGRAY);
+						printHZ(370+80,104,"ÖÆ¶¯",32,DARKGRAY);
+						save_bk_mou(mouseX,mouseY);
+						drawmous(mouseX,mouseY);
+					}
+					pCar->hasMileage += total * pCar->speed;
+					pCar->start = clock();
+				}
+			}
 			
 			if(electricityTemp != pCar->electricityLeft)
 			{
@@ -134,7 +160,8 @@ int p4(PCAR pCar)
 					continue;
 				}
 				pCar->k = 10;
-				pCar->runState = 1;			
+				pCar->runState = 1;		
+				pCar->speed = 60;
 				pCar->start = clock();
 				clrmous(mouseX,mouseY);
 				setfillstyle(SOLID_FILL,GREEN);
@@ -159,6 +186,7 @@ int p4(PCAR pCar)
 				}
 				pCar->k = 20;
 				pCar->runState = 2;			
+				pCar->speed = 0;
 				clrmous(mouseX,mouseY);
 				setfillstyle(SOLID_FILL,BLACK);
 				bar(370, 104,602, 137);
