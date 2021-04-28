@@ -1,11 +1,20 @@
 #ifndef _MY_F_H_
 #define _MY_F_H_
 
+#include<time.h>
+
+#define MAX_ELECTRICITY 70.0			//最大电量
+#define WARNING_ELECTRICITY 15.0		//警告电量
+#define PRICE_PER_KWH 0.5       //一度电的价钱
+#define SHOWMOUSE					//若define了则显示鼠标坐标
+#define DEBUGMODE					//若define了则进入DEBUG模式。
+
 //汽车结构声明
 typedef struct car
 {
-	int electricityLeft;	//剩余电量
-	int hasMileage; //已行驶里程
+	double electricityLeft;	//剩余电量
+	double destElec;		//充电时目标电量
+	double hasMileage; //已行驶里程
 	
 	//下列四种状态0为关闭，1为开启
 	int airConditioningFlag; //空调状态
@@ -27,9 +36,14 @@ typedef struct car
 	
 	tm info;				//行驶记录起始时间
 	char id[20];			//汽车的id（即登录时的用户名）
+	
+	//车在地图上的坐标
+	int x;
+	int y;
+
+	int isAdmin;		//是否为管理员
+	double balance;		//用户余额
 }CAR,*PCAR;
-
-
 
 extern void *buffer;
 extern union REGS regs;
@@ -38,7 +52,6 @@ extern int mouseX;
 extern int mouseY;
 extern int press;
 extern int flag;
-
 
 ///////////////////////////////////
 //函数名：printHZ
@@ -110,6 +123,14 @@ void showMousePos(void);
 void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color);
 
 ///////////////////////////////////
+//函数名：inputTextWithLength
+//功能：输入法【所用字体为（DEFAULT_FONT,HORIZ_DIR,3）//（3号默认字体）】【限制长度版本】
+//入口参数：起始位置的x,y坐标的地址，是否在输入法文本框内的标志，文本长度的地址，指向文本的字符串(这些变量都要在调用该函数的函数处定义好，把地址传进来),颜色,文本最大长度
+//返回值：void
+///////////////////////////////////
+void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color,int maxLength);
+
+///////////////////////////////////
 //函数名：inputPassword
 //功能：输入法【所用字体为（DEFAULT_FONT,HORIZ_DIR,3）//（3号默认字体）】
 //入口参数：起始位置的x,y坐标的地址，是否在输入法文本框内的标志，文本长度的地址，指向文本的字符串(这些变量都要在调用该函数的函数处定义好，把地址传进来),颜色
@@ -137,9 +158,9 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s);
 //函数名：popWindow_withoutFlush
 //功能：在屏幕中央弹窗（点OK后不重画界面，而是使用putimage恢复弹窗前界面）（含提示文字和一个用于点击的OK框）
 //入口参数：存储图像的指针的地址，弹窗状态变量的地址，汉字字符串的地址弹窗状态变量的地址，汉字字符串的地址
-//返回值：void
+//返回值：int。点击确定返回1，没点击返回0
 ///////////////////////////////////
-void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
+int popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
 
 
 //函数名：recordOut
@@ -149,17 +170,6 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
 ///////////////////////////////////
 void recordOut(void);
 
-
-
-
-// /*
-// 函数名：recordIn
-// 功能：登录时写入时间到record.txt
-// 入口参数：id,汽车结构体变量pCar
-// 返回值：void
-// */
-//void recordIn(char *p,PCAR pCar);
-
 ///////////////////////////////////
 //函数名：recordWrite
 //功能：写行驶记录到record.txt
@@ -168,15 +178,45 @@ void recordOut(void);
 ///////////////////////////////////
 void recordWrite(char * p,PCAR pCar);
 
-
 ///////////////////////////////////
-//函数名：playSound
-//功能：播放音乐
-//入口参数：void
+//函数名：barRecWithCenter
+//功能：用中心点x,y和大小size绘制有颜色的矩形（车）
+//入口参数：中心点x,y，大小size
 //返回值：void
 ///////////////////////////////////
-// void playSound(void);
+void barRecWithCenter(int centerX,int centerY,int size);
 
+///////////////////////////////////
+//函数名：exitFunc
+//功能：程序出错时输出错误信息并退出程序
+//入口参数：错误信息errorMessage
+//返回值：void
+///////////////////////////////////
+void exitFunc(char * errorMessage);
+
+/*
+函数名：testStringIsAllNumbers
+功能：测试字符串是否全为数字
+入口参数：字符串
+返回值：若全是数字返回1，不是返回0
+*/
+int testStringIsAllNumbers(char * str);
+
+/*
+函数名：testStringIsFloat
+功能：测试字符串是否对应浮点数
+入口参数：字符串
+返回值：若是浮点数返回1，不是返回0
+*/
+int testStringIsFloat(char * str);
+
+/*
+函数名：button
+功能：按钮阴影效果
+入口参数：鼠标坐标，颜色
+返回值：void
+*/
+void button(int x1, int y1, int x2, int y2, int color1, int color2);
 
 #endif
 

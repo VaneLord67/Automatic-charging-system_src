@@ -1,4 +1,5 @@
-#include"common.h"
+//hz.cpp
+
 #include"hz.h"
 
 void puthz(int x, int y,char *s,int flag,int part,int color)
@@ -8,7 +9,6 @@ void puthz(int x, int y,char *s,int flag,int part,int color)
 	unsigned long offset;                          //定义汉字在字库中的偏移量
 	unsigned char mask[] = {0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};  //功能数组，用于显示汉字点阵中的亮点
 	int i,j,pos;
-
 
 	switch(flag)    //不同的flag对应不同的汉字库，实现了汉字的大小可根据需要改变
 	{

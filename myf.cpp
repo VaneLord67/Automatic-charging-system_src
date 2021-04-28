@@ -2,11 +2,21 @@
 //myf.cpp
 //各种功能函数的实现
 ///////////////////////////////////
-#include"common.h"
+// #include"common.h"
+#include<graphics.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+#include<bios.h>
+#include<string.h>
+#include<time.h>
+#include<malloc.h>
+#include"mouse.h"
+#include"hz.h"
 #include"myf.h"
+
 #define HZ_OFFSET 4 		//汉字的偏移量
-
-
 
 ///////////////////////////////////
 //函数名：printHZ
@@ -130,7 +140,7 @@ void showMousePos(void)
 	if(!(xn == mouseX && yn == mouseY))
 	{
 		setfillstyle(SOLID_FILL,BLACK);
-		bar(0,0,124,46);     //清除原有的数字
+		bar(0,0,80,46);     //清除原有的数字
 		sprintf(x,"%d",mouseX);
 		sprintf(y,"%d",mouseY);
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
@@ -201,21 +211,79 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 						drawmous(mouseX,mouseY);
 
 						(*x_input) += 25;
+					}					
+				}
+				break;
+		}
+	}
+	return;
+}
+
+///////////////////////////////////
+//函数名：inputTextWithLength
+//功能：输入法【所用字体为（DEFAULT_FONT,HORIZ_DIR,3）//（3号默认字体）】【限制长度版本】
+//入口参数：起始位置的x,y坐标的地址，是否在输入法文本框内的标志，文本长度的地址，指向文本的字符串(这些变量都要在调用该函数的函数处定义好，把地址传进来),颜色,文本最大长度
+//返回值：void
+///////////////////////////////////
+void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inputLength, char * text, int color,int maxLength)
+{
+	//int maxLength = 12; //文本输入最大长度12
+	if(kbhit() != 0)
+	{
+		int ch = 0;			
+		char textTemp[1] = {'\0'};	
+		ch = getch();
+		switch(ch)
+		{
+			case 8:  						//退格键
+				if( (*inputLength) > 0)
+				{
+					text[(*inputLength) - 1] = '\0';
+					(*inputLength) -- ;
+					(*x_input) -= 25;
+					clrmous(mouseX,mouseY);
+					setfillstyle(SOLID_FILL,BLACK);
+					bar((*x_input),(*y_input),(*x_input)+20,(*y_input)+24);
+					save_bk_mou(mouseX,mouseY);
+					drawmous(mouseX,mouseY);
+					if((*x_input) <= 5)
+					{
+						(*x_input) = 600;
+						if((*y_input) - 30 >= 240)
+						{
+							(*y_input) -= 30;
+						}
 					}
-					// else
-					// {
-						// x = 5;
-						// y += 30;
-						// outtextxy(x,y,textTemp);
-						// x += 15;
-					// }
 					
 				}
 				break;
-				
+			case 13:						//回车
+			case 27:						//ESC
+				(*inputFlag) = 0;
+				break;
+			default:
+				if((*inputLength) < maxLength)
+				{
+					text[(*inputLength)] = ch;
+					(*inputLength)++;
+					memset(textTemp,'\0',sizeof(textTemp));
+					sprintf(textTemp,"%c",ch);
+					if((*x_input) < 550)
+					{
+						clrmous(mouseX,mouseY);
+						settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+						setcolor(color);
+						outtextxy((*x_input),(*y_input),textTemp);
+
+						save_bk_mou(mouseX,mouseY);
+						drawmous(mouseX,mouseY);
+
+						(*x_input) += 25;
+					}					
+				}
+				break;
 		}
 	}
-	
 	return;
 }
 
@@ -280,20 +348,10 @@ void inputPassword(int * x_input, int * y_input,int * inputFlag,int * inputLengt
 
 						(*x_input) += 25;
 					}
-					// else
-					// {
-						// x = 5;
-						// y += 30;
-						// outtextxy(x,y,textTemp);
-						// x += 15;
-					// }
 				}
 				break;
-				
 		}
 	}
-	
-	return;
 }
 
 ///////////////////////////////////
@@ -308,8 +366,6 @@ void DiscardInput(void)
 	{
 		getch();
 	}
-	
-	return;
 }
 
 ///////////////////////////////////
@@ -322,6 +378,7 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s)
 {
 	if((*isPopWindow) == 0)
 	{
+		clrmous(mouseX,mouseY);
 		setcolor(BLACK);
 		bar(166,100,474,344); 	//清除弹窗后面的背景
 		setcolor(DARKGRAY);
@@ -331,6 +388,9 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s)
 		rectangle(232,236,414,306);
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,5);
 		outtextxy(285,250,"OK");
+		
+		save_bk_mou(mouseX,mouseY);
+		drawmous(mouseX,mouseY);
 		
 		(*isPopWindow) = 1;
 	}
@@ -350,9 +410,9 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s)
 //函数名：popWindow_withoutFlush
 //功能：在屏幕中央弹窗（点OK后不重画界面，而是使用putimage恢复弹窗前界面）（含提示文字和一个用于点击的OK框）
 //入口参数：存储图像的指针的地址，弹窗状态变量的地址，汉字字符串的地址
-//返回值：void
+//返回值：int。点击确定返回1，没点击返回0
 ///////////////////////////////////
-void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
+int popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 {
 	int size;
 	
@@ -367,21 +427,13 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 		}
 		else
 		{
-			settextjustify(LEFT_TEXT,TOP_TEXT);          
-			settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					
-			outtextxy(10,10,"Error!");
-			delay(1000);
-			exit(-1);
+			exitFunc("popWindow buf malloc error!");
 		}
-		// save_bk_mou(mouseX,mouseY);
-		// drawmous(mouseX,mouseY);
-		
 		clrmous(mouseX,mouseY);
-		//delay(200);
-		
+
 		setcolor(BLACK);
 		setfillstyle(SOLID_FILL,BLACK);
-		bar(166,100,474,344); 	//清除弹窗后面的背景
+		bar(166,100,474,344); 	
 		setcolor(DARKGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 		rectangle(166,100,474,344);
@@ -394,17 +446,17 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 		drawmous(mouseX,mouseY);
 		
 		(*isPopWindow) = 1;
+
 	}
 	else
 	{
 		if(mouse_press(232,236,414,306) == 1)
 		{
 			clrmous(mouseX,mouseY);
-			// delay(100);
-
 			setcolor(BLACK);
+			
 			bar(166,100,474,344); 	//清除原有的弹窗
-
+			
 			putimage(166,100,(*buf),COPY_PUT);
 			free((*buf));
 			
@@ -415,10 +467,12 @@ void popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 			(*isPopWindow) = 0;
 			
 			delay(200);
-		}		
+
+			return 1;
+		}
 	}
 	
-	return;
+	return 0;
 }
 
 
@@ -483,7 +537,7 @@ void recordWrite(char * p,PCAR pCar)
 	}
 	
 	fprintf(fp, "[%d]\nUSER:%s\n", max + 1, p);
-	fprintf(fp,"DIST:%d\n",pCar->hasMileage);
+	fprintf(fp,"DIST:%lf\n",pCar->hasMileage);
 	//fprintf(fp,"ELEL:\n",pCar->electricityLeft);
 	fprintf(fp, "TIME:");
 	fprintf(fp, "%d/%d/%d/%d:%d  -  ", pCar->info.tm_year + 1900, pCar->info.tm_mon + 1, pCar->info.tm_mday, pCar->info.tm_hour, pCar->info.tm_min);	
@@ -496,190 +550,81 @@ void recordWrite(char * p,PCAR pCar)
 	return;
 }
 
-// /*
-// 函数名：recordOut
-// 功能：回到初始界面/退出程序 后写入时间到record.txt
-// 入口参数：void
-// 返回值：void
-// */
-// void recordOut(void)
-// {
-	// time_t now;
-	// FILE* fp;
-	// now = time(0);
-	// tm info = *localtime(&now);
-	// int year = info.tm_year + 1900;
-	// int month = info.tm_mon + 1;
-	// int day = info.tm_mday;
-	// int hour = info.tm_hour;
-	// int minute = info.tm_min;
-	// //int second = info.tm_sec;
-
-	// if ((fp = fopen("record.txt", "a")) == NULL)
-	// {
-		// fprintf(stderr, "打开文件出错！\n");
-		// exit(EXIT_FAILURE);
-	// }
-
-	// fprintf(fp, "%d/%d/%d/%d:%d\n", year, month, day, hour, minute);
-
-	// //fprintf(stdout, "行驶记录录入成功！\n");
-
-	// fclose(fp);
-
-	// return;
-// }
-
-
-// /*
-// 函数名：recordIn
-// 功能：登录时写入时间到record.txt
-// 入口参数：id,汽车结构体变量pCar
-// 返回值：void
-// */
-// void recordIn(char * p,PCAR pCar)
-// {
-	// time_t now;
-	// FILE* fp;
-	// char ch;
-	// char temp[80] = {'\0'};
-	// int length = 0;
-	// int max = 0;
-	// now = time(0);
-	// pCar->info = *localtime(&now);
-	// int year = pCar->info.tm_year + 1900;
-	// int month = pCar->info.tm_mon + 1;
-	// int day = pCar->info.tm_mday;
-	// int hour = pCar->info.tm_hour;
-	// int minute = pCar->info.tm_min;
-	// //int second = info.tm_sec;
-	
-	// if ((fp = fopen("record.txt", "r")) == NULL)
-	// {
-		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		// outtextxy(10,10,"Can't open file!Press any key to quit...");
-		// getch();
-		// exit(1);
-	// }
-	
-	// while ( (ch = getc(fp)) != EOF)
-	// {
-		// if (ch == '[')
-		// {
-			// memset(temp, '\0', sizeof(temp));
-			// length = 0;
-			// while ( (ch = getc(fp)) != ']')
-			// {
-				// temp[length] = ch;
-				// length++;
-			// }
-		// }
-		// if (max < atoi(temp))
-		// {
-			// max = atoi(temp);
-		// }
-	// }
-	
-	// fclose(fp);
-	
-	// if ((fp = fopen("record.txt", "a")) == NULL)
-	// {
-		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		// outtextxy(10,10,"Can't open file!Press any key to quit...");
-		// getch();
-		// exit(1);
-	// }
-	// fprintf(fp, "[%d]\nUSER:%s\n", max + 1, p);
-	// fprintf(fp,"DIST:%d\n",pCar->hasMileage);
-	// //fprintf(fp,"ELEL:\n",pCar->electricityLeft);
-	// fprintf(fp, "TIME:");
-	// fprintf(fp, "%d/%d/%d/%d:%d  -  ", year, month, day, hour, minute);	
-	
-	// fclose(fp);
-	
-	
-	// if ((fp = fopen("record.txt", "a")) == NULL)
-	// {
-		// settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		// settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		// outtextxy(10,10,"Can't open file!Press any key to quit...");
-		// getch();
-		// exit(1);
-	// }
-
-	// fprintf(fp, "%d/%d/%d/%d:%d\n", year, month, day, hour, minute);
-	
-
-	// //fprintf(stdout, "行驶记录录入成功！\n");
-
-	// fclose(fp);
-
-	// return;
-// }
-
-
-
-
-
 ///////////////////////////////////
-//函数名：playSound
-//功能：播放音乐
-//入口参数：void
+//函数名：barRecWithCenter
+//功能：用中心点x,y和大小size绘制有颜色的矩形（车）
+//入口参数：中心点x,y，大小size
 //返回值：void
 ///////////////////////////////////
-// void playSound(void)
-// {
-	// int freq[96]={784,660,588,660,523,523,
-	// 588,494,440,523,392,392,
-	// 330,392,440,523,784,440,523,392,
-	// 784,1048,880,784,660,784,588,588,
-	// 588,660,494,440,392,440,523,588,
-	// 330,523,440,392,440,523,392,392,
-	// 660,784,494,588,440,523,392,392,
-	// 330,392,330,392,392,440,494,588,440,440,392,440,
-	// 523,588,784,660,588,660,588,523,440,392,
-	// 330,523,440,523,440,392,330,392,440,523,
-	// 392,392,660,784,588,660,588,523,494,440,784,784};
-	// int dely[96]={25,50,12,12,50,50,
-	// 25,50,12,12,50,50,
-	// 50,38,12,38,12,12,12,25,
-	// 38,12,12,12,12,12,50,50,
-	// 38,12,25,25,38,12,25,25,
-	// 25,25,12,12,12,12,50,50,
-	// 38,12,25,25,12,12,50,25,
-	// 12,12,12,12,12,12,12,12,50,25,12,12,
-	// 38,12,25,25,25,12,12,25,12,12,
-	// 50,50,12,12,12,12,12,12,12,12,
-	// 50,25,12,12,12,12,12,12,25,25,50,50};
-	// while(1)
-	// {
-		// if(playIndex >= 96)
-		// {
-			// playIndex = 0;
-		// }
-		// sound(freq[playIndex]);  
-		// end = clock();
-		// total = (double)(end - start) / CLOCKS_PER_SEC;
-		// if(total * 1000 >= (double)(10*dely[playIndex]))
-		// {
-			// start = clock();
-			// playIndex++;
-			// continue;
-		// }
-		// else
-		// {
-			// break;
-		// }
-	// }
-	
-	// return;
-// }
+void barRecWithCenter(int centerX,int centerY,int size)
+{
+	setfillstyle(SOLID_FILL,GREEN);
+	bar(centerX-size,centerY-size,centerX+size,centerY+size);
+	return;
+}
 
+///////////////////////////////////
+//函数名：exitFunc
+//功能：程序出错时输出错误信息并退出程序
+//入口参数：错误信息errorMessage
+//返回值：void
+///////////////////////////////////
+void exitFunc(char * errorMessage)
+{
+	settextjustify(LEFT_TEXT,TOP_TEXT);          
+	settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					
+	outtextxy(10,10,errorMessage);
+	delay(2000);
+	exit(-1);
+	return;
+}
 
+/*
+函数名：testStringIsAllNumbers
+功能：测试字符串是否全为数字
+入口参数：字符串
+返回值：若全是数字返回1，不是返回0
+*/
+int testStringIsAllNumbers(char * str)
+{
+	return strspn(str,"0123456789")==strlen(str);
+}
 
+/*
+函数名：testStringIsFloat
+功能：测试字符串是否对应浮点数
+入口参数：字符串
+返回值：若是浮点数返回1，不是返回0
+*/
+int testStringIsFloat(char * str)
+{
+	if(strspn(str,".0123456789")==strlen(str) && strlen(str) > 0)
+	{
+		if(str[0] != '.' && str[strlen(str) - 3] == '.')
+		{
+			return 1;
+		}
+		return 0;
+	}
+	return 0;
+}
 
+/*
+函数名：button
+功能：按钮阴影效果
+入口参数：鼠标坐标，颜色
+返回值：void
+*/
+void button(int x1, int y1, int x2, int y2, int color1, int color2)
+{
+	clrmous(mouseX, mouseY);
+	delay(10);
+	setcolor(color1);
+	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+	setfillstyle(1, color2);
+	bar(x1,y1,x2,y2);
+	return;
+} 
 
 
 

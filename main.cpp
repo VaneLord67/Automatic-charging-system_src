@@ -1,9 +1,8 @@
 ////////////////////////
 //主函数
 ////////////////////////
-#include"common.h"
-#include"main.h"
 
+#include"main.h"
 
 //定义一些全局变量便于鼠标使用
 void *buffer;
@@ -26,7 +25,9 @@ int main(void)
 	PCAR pCar = (PCAR)malloc(sizeof(CAR));
 	initCar(pCar);			//初始化汽车参数
 	
-	page = 0;
+	#ifdef DEBUGMODE
+	page = 0;		
+	#endif
 	
 	while(1)
 	{
@@ -37,21 +38,23 @@ int main(void)
 				free(pCar);
 				PCAR pCar = (PCAR)malloc(sizeof(CAR));
 				initCar(pCar);			//初始化汽车参数
-				//recordOut();
 				page = p0();
 				break;
 			case 1:   //注册界面
-				page = p1();
+				page = p1(pCar);
 				break;
 			case 2:   //登录界面
 				page = p2(pCar);
 				break;
 			case 3:  //退出
-				if(pCar->loginFlag == 1)		//如果登陆过才写记录
+				if(pCar->loginFlag == 1 && pCar->isAdmin == 0)		//如果登陆过才写记录
 				{
 					recordWrite(pCar->id,pCar);
 				}
-				electricityWrite(pCar);		//写剩余电量到文件energy.txt中
+				if(pCar->isAdmin == 0)			//用户写文件
+				{
+					carInfoWrite(pCar);		//将汽车信息写到carinfo.txt中
+				}
 				free(pCar);				//退出前释放堆内存
 				closegraph();
 				delay(1000);			//delay防止鼠标出现连点Bug
@@ -65,20 +68,35 @@ int main(void)
 			case 6:
 				page = p6(pCar);		//里程计算器
 				break;
-			case 7:
-				page = p7(pCar);		//电量模块
-				break;
 			case 8:
 				page = p8();			//个人中心（有行驶记录查询功能）
 				break;
 			case 9:
-				page = p9();			//行驶记录查询
+				page = p9(pCar);			//行驶记录查询
 				break;
 			case 10:					//一键充电界面
 				page = p10(pCar);
 				break;
-			case 11:
+			case 11:					//一键换电界面
 				page = p11(pCar);
+				break;
+			case 12:					//地图移动界面
+				page = p12(pCar);
+				break;
+			case 13:					
+				page = p13(pCar);		//管理员界面
+				break;
+			case 14:
+				page = p14(pCar);		//充值界面
+				break;
+			case 15:
+				page = p15(pCar);		//充电金额计算界面
+				break;
+			case 16:
+				page = p16(pCar);		//换电金额计算界面
+				break;
+			case 17:
+				page = p17(pCar);       //充电记录查询界面 
 				break;
 			default:
 				page = 0;			//出现其他异常情况退回到初始界面
@@ -97,22 +115,27 @@ int main(void)
 */
 void initCar(PCAR pCar)
 {
-	//读取energy.txt中的剩余电量
+	//读取carinfo.txt中的剩余电量
 	FILE * fp = NULL;
 	char temp[80] = {'\0'};
-	fp = fopen("energy.txt","r");
+	fp = fopen("carinfo.txt","r");
 	if ( fp == NULL )
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("file carinfo.txt open error!");
 	}
 	fgets(temp,80,fp);
-	pCar->electricityLeft = atoi(temp);
-	//fscanf(fp,"%d",pCar->electricityLeft);
-	//pCar->electricityLeft = 70;	//剩余电量(现改为从文件energy.txt中读)
+	pCar->electricityLeft = atof(temp);
+	fgets(temp,80,fp);
+	pCar->x = atoi(temp);
+	fgets(temp,80,fp);
+	pCar->y = atoi(temp);
+
+	if(pCar->x == 0 || pCar->y == 0)
+	{
+		pCar->x = 240;
+		pCar->y = 240;
+	}
+
 	pCar->hasMileage = 0;			//行驶里程
 	pCar->airConditioningFlag = 0; //空调状态
 	pCar->lightFlag = 0;			//车灯状态
@@ -126,29 +149,30 @@ void initCar(PCAR pCar)
 	pCar->b = 0;				//数学模型b值初始化为0 
 	pCar->loginFlag = 0;			//登陆状态初始化为0
 	pCar->start = 0;
-	// pCar->temp = 0;
+	pCar->isAdmin = 0;
+	pCar->balance = 0;				
+	
+	fclose(fp);
 }
 
 /*
-函数名：electricityWrite
-功能：剩余电量写入文件energy.txt
+函数名：carInfoWrite
+功能：汽车剩余电量、位置写入文件carinfo.txt
 入口参数：汽车结构体指针pCar
 返回值：void
 */
-void electricityWrite(PCAR pCar)
+void carInfoWrite(PCAR pCar)
 {
 	FILE * fp = NULL;
-	fp = fopen("energy.txt","w");
+	fp = fopen("carinfo.txt","w");
 	if ( fp == NULL )
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open carinfo.txt file error!");
 	}
 	
-	fprintf(fp,"%d",pCar->electricityLeft);
+	fprintf(fp,"%lf\n",pCar->electricityLeft);
+	fprintf(fp,"%d\n",pCar->x);
+	fprintf(fp,"%d\n",pCar->y);
 	
 	fclose(fp);
 	return;

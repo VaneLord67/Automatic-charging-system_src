@@ -1,5 +1,5 @@
+//page5 中控界面
 
-#include"common.h"
 #include"page5.h"
 
 /*
@@ -40,25 +40,13 @@ int p5(PCAR pCar)
 		changeToOff(108+78+300,104,186+78+300,145,&(pCar->windowFlag));
 		changeToOn(108+300,104+100,186+300,145+100,&(pCar->musicFlag));
 		changeToOff(108+78+300,104+100,186+78+300,145+100,&(pCar->musicFlag));
-		
-		
-		
-		// if(mouse_press(413,303,564,404) == 1)        //点击退出按钮
-		// {
-			// page = 3;
-		// }
-		
-		// if(mouse_press(237, 303, 388, 404) == 1)      //点击返回按钮
-		// {
-			// page = 4;
-		// }
-		
-		if(mouse_press(401,409,508,459) == 1)			//退出
+				
+		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出
 		{
 			page = 3;
 		}
 		
-		if(mouse_press(123,409,230,459) == 1)			//返回
+		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//返回
 		{
 			page = 4;
 		}
@@ -76,27 +64,26 @@ int p5(PCAR pCar)
 void page5_screen(void)
 {
 	cleardevice();
-	setbkcolor(WHITE);
-	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
+	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	
 	printHZ_withoutRec(200,20,"中控功能",48,DARKGRAY);
-	printHZ_withoutRec(26, 100,"空调",24,DARKGRAY);
-	printHZ_withoutRec(26, 200,"车灯",24,DARKGRAY);
-	printHZ_withoutRec(26+300, 100,"天窗",24,DARKGRAY);
-	printHZ_withoutRec(26+300, 200,"音乐",24,DARKGRAY);
-	
-
+	printHZ_withoutRec(26, 110,"空调",24,DARKGRAY);
+	printHZ_withoutRec(26, 210,"车灯",24,DARKGRAY);
+	printHZ_withoutRec(26+300, 110,"天窗",24,DARKGRAY);
+	printHZ_withoutRec(26+300, 210,"音乐",24,DARKGRAY);
 	
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	setcolor(DARKGRAY);
-	// rectangle(237,303,388,404);
-	// rectangle(413,303,564,404);
-	// puthz(251,319,"返回",48,52,DARKGRAY);
-	// puthz(429,319,"退出",48,52,DARKGRAY);
 	
-	printHZ(122, 408,"返回",48,DARKGRAY);
-	printHZ(400, 408,"退出",48,DARKGRAY);
+	setfillstyle(SOLID_FILL,DARKGRAY);
+	bar(112,408,122+48*2*1.1+2,408+48);
+	bar(390,408,400+48*2*1.1+2,408+48);
+	floodfill(123,409,DARKGRAY); 
+	floodfill(401,409,DARKGRAY);
+	printHZ(122, 408,"返回",48,WHITE);
+	printHZ(400, 408,"退出",48,WHITE);
 	
 	return;
 }
@@ -116,7 +103,7 @@ int changeToOn(int x1,int y1,int x2,int y2,int* flag)
 		delay(100);
 		
 		setcolor(DARKGRAY);
-		setfillstyle(SOLID_FILL,WHITE);
+		setfillstyle(SOLID_FILL,LIGHTCYAN);
 		bar(x1+78,y1,x2+78,y2);
 		rectangle(x1+78,y1,x2+78,y2);
 		puthz(x1+32+78,y1+11,"关",24,28,DARKGRAY);
@@ -153,7 +140,7 @@ int changeToOff(int x1,int y1,int x2,int y2,int* flag)
 		puthz(x1+32,y1+11,"关",24,28,YELLOW);
 		
 		setcolor(DARKGRAY);
-		setfillstyle(SOLID_FILL,WHITE);
+		setfillstyle(SOLID_FILL,LIGHTCYAN);
 		bar(x1-78,y1,x2-78,y2);
 		rectangle(x1-78,y1,x2-78,y2);
 		puthz(x1+32-78,y1+11,"开",24,28,DARKGRAY);
@@ -186,7 +173,7 @@ void stateDraw(int x1,int y1,int x2,int y2,int * flag)
 	else
 	{
 		setcolor(DARKGRAY);
-		setfillstyle(SOLID_FILL,WHITE);
+		setfillstyle(SOLID_FILL,LIGHTCYAN);
 		bar(x1+78,y1,x2+78,y2);
 		rectangle(x1+78,y1,x2+78,y2);
 		puthz(x1+32+78,y1+11,"关",24,28,DARKGRAY);

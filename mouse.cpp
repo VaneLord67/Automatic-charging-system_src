@@ -1,4 +1,3 @@
-#include"common.h"
 #include"mouse.h"
 
 extern void *buffer;
@@ -65,7 +64,7 @@ void initMouse(void)
 
 /*
 函数名：save_bk_mou
-功能：初始化鼠标
+功能：保存鼠标背景
 入口参数：鼠标位置nx,ny
 返回值：void
 */
@@ -166,10 +165,14 @@ void newmouse(int *nx,int *ny,int *nbuttons)
 	*nx = xn;
 	*ny = yn;                                 
 	*nbuttons = buttonsn;						//更新鼠标参数
-	if(buttons0 == *nbuttons)
-		*nbuttons = 0;    //使得能连续按键
+	
+	// if(buttons0 == *nbuttons)
+		// *nbuttons = 0;    //使得能连续按键
+	
 	if(xn == x0 && yn == y0 && buttonsn == buttons0)
 		return;            //鼠标状态不变则直接返回S
+
+	
 	clrmous(x0,y0);        //说明鼠标状态发生了改变
 	save_bk_mou(*nx,*ny);
 	drawmous(*nx,*ny);
@@ -230,9 +233,12 @@ int mouse_press(int x1, int y1, int x2, int y2)
 	}
 }
 
-
-
-
-
-
+int mouse_pressCenter(int centerX,int centerY,int size)
+{
+	int x1 = centerX - size;
+	int x2 = centerX + size;
+	int y1 = centerY - size;
+	int y2 = centerY + size;
+	return mouse_press(x1,y1,x2,y2);
+}
 

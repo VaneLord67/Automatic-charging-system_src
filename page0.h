@@ -1,13 +1,20 @@
 #ifndef _PAGE0_H_
 #define _PAGE0_H_
 
-extern void *buffer;
-extern union REGS regs;
+#include<graphics.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+#include<bios.h>
+#include<string.h>
+#include<time.h>
+#include<malloc.h>
+#include<math.h>
+#include"mouse.h"
+#include"hz.h"
+#include"myf.h"
 
-extern int mouseX;
-extern int mouseY;
-extern int press;
-extern int flag;
 
 void page0_screen(void);
 int p0(void);

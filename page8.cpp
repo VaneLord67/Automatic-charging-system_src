@@ -2,7 +2,6 @@
 //个人中心界面
 ////////////////
 
-#include"common.h"
 #include"page8.h"
 
 /*
@@ -24,17 +23,22 @@ int p8(void)
 		showMousePos();
 		#endif
 		
-		if(mouse_press(200,20,415,192) == 1)			//行驶记录查询
+		if(mouse_press(200-10,160,200+32*6+30,160+32) == 1)			//行驶记录查询
 		{
 			page = 9;
 		}
+
+		if(mouse_press(243-10,240,243+32*4+20,240+32) == 1)			//余额充值
+		{
+			page = 14;
+		}
 		
-		if(mouse_press(401,409,508,459) == 1)			//退出
+		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出
 		{
 			page = 3;
 		}
 		
-		if(mouse_press(123,409,230,459) == 1)			//返回
+		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//返回
 		{
 			page = 4;
 		}
@@ -55,10 +59,26 @@ int p8(void)
 void page8_screen(void)
 {
 	cleardevice();
-	setbkcolor(WHITE);
+	setbkcolor(LIGHTCYAN);
+	setcolor(DARKGRAY);
+	setfillstyle(SOLID_FILL,DARKGRAY);
 	printHZ_withoutRec(200,20,"个人中心",48,DARKGRAY);
-	printHZ(200,160,"行驶记录查询",32,DARKGRAY);
-	printHZ(122, 408,"返回",48,DARKGRAY);
-	printHZ(400, 408,"退出",48,DARKGRAY);
+	
+	bar(200-10,160,200+32*6+30,160+32);
+	bar(243-10-15,240,243+32*4+20-15,240+32);
+	floodfill(200,160,DARKGRAY);
+	floodfill(243,240,DARKGRAY);
+	printHZ(200,160,"行驶记录查询",32,WHITE);
+	printHZ(243-15,240,"余额充值",32,WHITE);
+	
+
+	setfillstyle(SOLID_FILL,DARKGRAY);
+	bar(112,408,122+48*2*1.1+2,408+48);
+	bar(390,408,400+48*2*1.1+2,408+48);
+	floodfill(123,409,DARKGRAY); 
+	floodfill(401,409,DARKGRAY);
+	printHZ(122, 408,"返回",48,WHITE);
+	printHZ(400, 408,"退出",48,WHITE);
+	
 	return;
 }

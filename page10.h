@@ -1,15 +1,19 @@
 #ifndef _PAGE10_H_
 #define _PAGE10_H_
 
-
-
-extern void *buffer;
-extern union REGS regs;
-
-extern int mouseX;
-extern int mouseY;
-extern int press;
-extern int flag;
+#include<graphics.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+#include<string.h>
+#include<time.h>
+#include<malloc.h>
+#include<math.h>
+#include"mouse.h"
+#include"hz.h"
+#include"myf.h"
+#include"page14.h"
 
 /*
 函数名：page10_screen
@@ -26,5 +30,21 @@ void page10_screen(void);
 返回值：int类型，返回page的值
 */
 int p10(PCAR pCar);
+
+/*
+函数名：CarElecWrite_charge
+功能：将汽车电量变化写入文件elec.txt中
+入口参数：id,汽车结构体指针pCar，汽车充电前电量p1
+返回值：void
+*/
+void CarElecWrite_charge(char * p, PCAR pCar, double *p1);
+
+/*
+函数名：drawcircle;
+功能:在指定位置画一个圆 
+入口参数：圆心坐标
+返回值：void
+*/
+void drawcircle(int x,int y);
 
 #endif
