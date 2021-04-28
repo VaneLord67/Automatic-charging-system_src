@@ -1,9 +1,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#include<graphics.h>
-#include<stdio.h>
-#include<malloc.h>
+#include"myf.h"
 
 #include"page0.h"
 #include"page1.h"
@@ -21,10 +19,6 @@
 #include"page15.h"
 #include"page16.h"
 #include"page17.h"
-
-#include"mouse.h"
-#include"hz.h"
-#include"myf.h"
 
 /*
 º¯ÊýÃû£ºmain

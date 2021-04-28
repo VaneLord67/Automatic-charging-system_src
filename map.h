@@ -1,23 +1,6 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include<graphics.h>
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#include<dos.h>
-#include<bios.h>
-#include<string.h>
-#include<malloc.h>
-#include<math.h>
-#include<stdio.h>
-#include<malloc.h>
-#include<string.h>
-#include<stdlib.h>
-
-#include"main.h"
-#include"hz.h"
-#include"mouse.h"
 #include"myf.h"
 
 #define MAXVEX 15			//最多的结点数
@@ -28,14 +11,6 @@
 #define ROUND_RADIUS 10		//地图结点的半径
 #define DISTANCE_RATIO 60 //地图结点距离与真实距离之间的缩放倍率 60为缩小到六十分之一
 #define STATION_NAME_OFFSET 50
-
-extern void *buffer;
-extern union REGS regs;
-
-extern int mouseX;
-extern int mouseY;
-extern int press;
-extern int flag;
 
 typedef int Patharc[MAXVEX];//用于存储最短路径下标的数组
 typedef double ShortPathTable[MAXVEX]; //用于存储到各点最短路径的权值和

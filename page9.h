@@ -1,27 +1,7 @@
 #ifndef _PAGE9_H_
 #define _PAGE9_H_
 
-#include<graphics.h>
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#include<dos.h>
-#include<bios.h>
-#include<string.h>
-#include<time.h>
-#include<malloc.h>
-#include<math.h>
-#include"mouse.h"
-#include"hz.h"
 #include"myf.h"
-
-extern void *buffer;
-extern union REGS regs;
-
-extern int mouseX;
-extern int mouseY;
-extern int press;
-extern int flag;
 
 #define SIZE 2			//一页显示几条
 #define MAX_RECORD 500	//最多几条记录

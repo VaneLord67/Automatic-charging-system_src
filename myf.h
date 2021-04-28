@@ -1,7 +1,18 @@
 #ifndef _MY_F_H_
 #define _MY_F_H_
 
+#include<graphics.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+#include<string.h>
 #include<time.h>
+#include<malloc.h>
+#include<math.h>
+#include"mouse.h"
+#include"hz.h"
+
 
 #define MAX_ELECTRICITY 70.0			//最大电量
 #define WARNING_ELECTRICITY 15.0		//警告电量

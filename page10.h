@@ -1,19 +1,15 @@
 #ifndef _PAGE10_H_
 #define _PAGE10_H_
 
-#include<graphics.h>
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#include<dos.h>
-#include<string.h>
-#include<time.h>
-#include<malloc.h>
-#include<math.h>
-#include"mouse.h"
-#include"hz.h"
 #include"myf.h"
-#include"page14.h"
+
+/*
+函数名：updateBalance
+功能：更新用户余额
+入口参数：用户指针pCar
+返回值：void
+*/
+void updateBalance(PCAR pCar);
 
 /*
 函数名：page10_screen
