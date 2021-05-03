@@ -19,10 +19,6 @@ int p4(PCAR pCar)
 	int page = 4;
 	int num = 0;
 	
-	#ifdef DEBUGMODE
-	//pCar->electricityLeft = 70;
-	#endif
-	
 	double electricityTemp = pCar->electricityLeft;
 	double hasMileageTemp = pCar->hasMileage;
 	double balanceTemp = pCar->balance;
@@ -46,13 +42,14 @@ int p4(PCAR pCar)
 	drawmous(mouseX,mouseY);
 	
 	//根据汽车runState状态高亮按钮
+	//accroding car runState to light button
 	switch(pCar->runState)
 	{
 		case 0:
 			clrmous(mouseX,mouseY);
 			setfillstyle(SOLID_FILL,DARKGRAY);
 			bar(530, 104, 602, 137);
-			printHZ(370+80+80,104,"熄火",32,WHITE);
+			printHZ(370+80+80,104,"熄火",32,WHITE);		//"misfire"
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 			break;
@@ -60,7 +57,7 @@ int p4(PCAR pCar)
 			clrmous(mouseX,mouseY);
 			setfillstyle(SOLID_FILL,DARKGRAY);
 			bar(370,104,443,137);
-			printHZ(370,104,"行驶",32,WHITE);
+			printHZ(370,104,"行驶",32,WHITE);			//"drive"
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 			break;
@@ -68,7 +65,7 @@ int p4(PCAR pCar)
 			clrmous(mouseX,mouseY);
 			setfillstyle(SOLID_FILL,DARKGRAY);
 			bar(451,104,522,137);
-			printHZ(370+80,104,"制动",32,WHITE);
+			printHZ(370+80,104,"制动",32,WHITE);		//"stop"
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 			break;
@@ -78,7 +75,7 @@ int p4(PCAR pCar)
 			clrmous(mouseX,mouseY);
 			setfillstyle(SOLID_FILL,DARKGRAY);
 			bar(530, 104, 602, 137);
-			printHZ(370+80+80,104,"熄火",32,WHITE);
+			printHZ(370+80+80,104,"熄火",32,WHITE);			//"misfire"
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 			break;
@@ -96,7 +93,7 @@ int p4(PCAR pCar)
 		{
 			if(pCar->electricityLeft < WARNING_ELECTRICITY && pCar->runState == 2 && hasWarning == 0)
 			{
-				popWindow_withoutFlush(&buf,&isPopWindow,"电量告急");
+				popWindow_withoutFlush(&buf,&isPopWindow,"电量告急");		//"elec urgent"
 				hasWarning = 1;
 			}
 
@@ -179,13 +176,13 @@ int p4(PCAR pCar)
 				//itoa(hasMileageTemp,hasMileageStringTemp,10);
 				printText_withoutRec(165,200+90,balanceStringTemp,3,DARKGRAY);
 			}
-			if(mouse_press(370, 104, 443, 137) == 1 && pCar->runState != 1)			//行驶状态
+			if(mouse_press(370, 104, 443, 137) == 1 && pCar->runState != 1)			//driving state 行驶状态
 			{
 				
 				if(pCar->electricityLeft <= 0)
 				{
 					//clrmous(mouseX,mouseY);
-					popWindow_withoutFlush(&buf, &isPopWindow, "电量不足");	
+					popWindow_withoutFlush(&buf, &isPopWindow, "电量不足");		//"elec is not enough"
 					// save_bk_mou(mouseX,mouseY);
 					// drawmous(mouseX,mouseY);
 					continue;
@@ -207,11 +204,11 @@ int p4(PCAR pCar)
 				// save_bk_mou(mouseX,mouseY);
 				// drawmous(mouseX,mouseY);
 			}
-			if(mouse_press(451, 104, 522, 137) == 1 && pCar->runState != 2)		//制动状态
+			if(mouse_press(451, 104, 522, 137) == 1 && pCar->runState != 2)		//stop State 制动状态
 			{
 				if(pCar->electricityLeft <= 0)
 				{
-					popWindow_withoutFlush(&buf, &isPopWindow, "电量不足");	
+					popWindow_withoutFlush(&buf, &isPopWindow, "电量不足");			//"elec is not enough"
 					continue;
 				}
 				turnToState2();
@@ -221,7 +218,7 @@ int p4(PCAR pCar)
 				pCar->speed = 0;
 				
 			}
-			if(mouse_press(533, 104, 602, 137) == 1 && pCar->runState != 0)		//熄火状态
+			if(mouse_press(533, 104, 602, 137) == 1 && pCar->runState != 0)		//misfire State 熄火状态
 			{
 				pCar->k = 0;
 				pCar->runState = 0;			
@@ -229,64 +226,64 @@ int p4(PCAR pCar)
 				turnToState0();
 			}
 			
-			if(mouse_press(372, 156, 512, 188) == 1)      //中控模块
+			if(mouse_press(372, 156+30, 512, 188+30) == 1)      //center controll 中控模块
 			{
 				if(pCar->runState == 0)
 				{
-					popWindow_withoutFlush(&buf, &isPopWindow, "请启动车辆");
+					popWindow_withoutFlush(&buf, &isPopWindow, "请启动车辆");	//"please open the car "
 					clrmous(mouseX,mouseY);
 					setfillstyle(SOLID_FILL,BLACK);
                     bar(180,140,472,215);
-                    printHZ_withoutRec(195, 150,"请启动车辆",48,DARKGRAY);
+                    printHZ_withoutRec(195, 150,"请启动车辆",48,DARKGRAY);		//"please open the car"
 					save_bk_mou(mouseX,mouseY);
 					drawmous(mouseX,mouseY);
 					continue;
 				}
 				page = 5;
 			}
-			else if(mouse_press(370, 104+50+50,550,238) == 1)			//里程计算器
+			else if(mouse_press(370, 104+80+50,550,238+30) == 1)			//mileage cal 里程计算器
 			{
 				page = 6;					
 			}			
-			else if(mouse_press(370, 104+50+50+50,511,289) == 1)			//个人中心（有行驶记录查询功能）
+			else if(mouse_press(370, 104+80+50+50,511,289+30) == 1)			//personal center 个人中心
 			{
 				page = 8;				
 			}
-			else if(mouse_press(372, 156, 512, 188) == 2)
+			else if(mouse_press(372, 156+30, 512, 188+30) == 2)
 			{
 				if(num == 0)
 				{
-					button(370, 155, 512, 188,DARKGRAY,DARKGRAY);
-					printHZ(370,104+50,"中控功能",32,WHITE);
+					button(370, 155+30, 512, 188+30,DARKGRAY,DARKGRAY);
+					printHZ(370,104+80,"中控功能",32,WHITE);			//"center controll"
 					num = 1;
 				}
 				continue;
 			}
-			else if(mouse_press(370, 104+50+50,550,238) == 2)
+			else if(mouse_press(370, 104+80+50,550,238+30) == 2)
 			{
 				if(num == 0)
 				{
-					button(370, 104+50+50,550,238,DARKGRAY,DARKGRAY);
-					printHZ(370, 104+50+50,"里程计算器",32,WHITE);
+					button(370, 104+80+50,550,238+30,DARKGRAY,DARKGRAY);
+					printHZ(370, 104+80+50,"里程计算器",32,WHITE);		//"mileage cal"
 					num = 2;
 				}
 				continue;
 			}
-			else if(mouse_press(370, 104+50+50+50,511,289) == 2)
+			else if(mouse_press(370, 104+80+50+50,511,289+30) == 2)
 			{
 				if(num == 0)
 				{
-					button(370, 104+50+50+50,511,289,DARKGRAY,DARKGRAY);
-					printHZ(370, 104+50+50+50,"个人中心",32,WHITE);
+					button(370, 104+80+50+50,511,289+30,DARKGRAY,DARKGRAY);
+					printHZ(370, 104+80+50+50,"个人中心",32,WHITE);		//"personal center"
 					num = 3;
 				}
 				continue;
 			}							
-			else if(mouse_press(380,408,516,456) == 1)			//退出
+			else if(mouse_press(380,408,516,456) == 1)			//quit 退出
 			{
 				page = 3;
 			}			
-			else if(mouse_press(102,408,238,456) == 1)			//注销
+			else if(mouse_press(102,408,238,456) == 1)			//logout 注销
 			{
 				recordWrite(pCar->id,pCar);
 				carInfoWrite(pCar);
@@ -300,16 +297,16 @@ int p4(PCAR pCar)
 					switch(num)
 					{
 						case 1:
-							button(370, 155, 512, 188,DARKGRAY,LIGHTCYAN);
-							printHZ(370,104+50,"中控功能",32,DARKGRAY);
+							button(370, 155+30, 512, 188+30,DARKGRAY,LIGHTCYAN);
+							printHZ(370,104+80,"中控功能",32,DARKGRAY);		//"center controll function"
 							break;
 						case 2:
-							button(370, 104+50+50,550,238,DARKGRAY,LIGHTCYAN);
-							printHZ(370, 104+50+50,"里程计算器",32,DARKGRAY);
+							button(370, 104+80+50,550,238+30,DARKGRAY,LIGHTCYAN);
+							printHZ(370, 104+80+50,"里程计算器",32,DARKGRAY);		//"mileage cal"
 							break;
 						case 3:
-							button(370, 104+50+50+50,511,289,DARKGRAY,LIGHTCYAN);
-							printHZ(370, 104+50+50+50,"个人中心",32,DARKGRAY);
+							button(370, 104+80+50+50,511,289+30,DARKGRAY,LIGHTCYAN);
+							printHZ(370, 104+80+50+50,"个人中心",32,DARKGRAY);		//"personal center"
 							break;	
 					}
 					num = 0;
@@ -338,28 +335,39 @@ void page4_screen(void)
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
-	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	
-	printHZ_withoutRec(200,20,"数据显示",48,DARKGRAY);
-	printHZ_withoutRec(30, 110,"剩余电量：",24,DARKGRAY);
-	printHZ_withoutRec(30, 200,"行驶里程：",24,DARKGRAY);
-	printHZ_withoutRec(30, 290,"剩余余额：",24,DARKGRAY);
-	printHZ_withoutRec(280, 200,"公里",24,DARKGRAY);
-	printHZ_withoutRec(320, 290,"元",24,DARKGRAY);
-	printHZ(370,104,"行驶",32,DARKGRAY);
-	printHZ(370+80,104,"制动",32,DARKGRAY);
-	printHZ(370+80+80,104,"熄火",32,DARKGRAY);
-	printHZ(370,104+50,"中控功能",32,DARKGRAY);
-	//printHZ(370,104+50+50,"电量管理",32,DARKGRAY);
-	printHZ(370, 104+50+50,"里程计算器",32,DARKGRAY);
-	printHZ(370, 104+50+50+50,"个人中心",32,DARKGRAY);
-	printText_withoutRec(280,112,"KWh",2,DARKGRAY);
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	circle(407,158,15);
+	circle(407+80,158,15);
+	circle(407+160,158,15);
+	line(557,168,577,148);
+	line(400,152,400,164);
+	int a[] = {406,152,415,158,406,164,406,152};
+	drawpoly(4,a);
+	line(484,150,484,166);
+	line(484,150,492,155);
+	line(492,155,484,160);
+	
+	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+	printHZ_withoutRec(200,20,"数据显示",48,DARKGRAY);		//"data show"
+	printHZ_withoutRec(30, 110,"剩余电量：",24,DARKGRAY);		//"left elec"
+	printHZ_withoutRec(30, 200,"行驶里程：",24,DARKGRAY);		//"hasmileage"
+	printHZ_withoutRec(30, 290,"剩余余额：",24,DARKGRAY);		//"left balance"
+	printHZ_withoutRec(280, 200,"公里",24,DARKGRAY);			//"km"
+	printHZ_withoutRec(320, 290,"元",24,DARKGRAY);				//"yuan"
+	printHZ(370,104,"行驶",32,DARKGRAY);						//"drive"
+	printHZ(370+80,104,"制动",32,DARKGRAY);						//"stop"
+	printHZ(370+80+80,104,"熄火",32,DARKGRAY);					//"misfire"
+	printHZ(370,104+80,"中控功能",32,DARKGRAY);					//"center controll func"
+	printHZ(370,104+80+50,"里程计算器",32,DARKGRAY);			//"mileage cal"
+	printHZ(370,104+80+50+50,"个人中心",32,DARKGRAY);			//"personal center"
+	printText_withoutRec(280,112,"KWh",2,DARKGRAY);				
 	
 	setfillstyle(SOLID_FILL,DARKGRAY);	
 	bar(102,408,238,456);
 	bar(380,408,516,456);
-	printHZ_withoutRec(122, 408,"注销",48,WHITE);
-	printHZ_withoutRec(400, 408,"退出",48,WHITE);
+	printHZ_withoutRec(122, 408,"注销",48,WHITE);				//"logout"
+	printHZ_withoutRec(400, 408,"退出",48,WHITE);				//"quit"
 		
 	return;
 }
@@ -377,9 +385,9 @@ void turnToState0(void)
 	bar(370, 104,602, 137);
 	setfillstyle(SOLID_FILL,DARKGRAY);
 	bar(530, 104, 602, 137);
-	printHZ(370+80+80,104,"熄火",32,WHITE);
-	printHZ(370,104,"行驶",32,DARKGRAY);
-	printHZ(370+80,104,"制动",32,DARKGRAY);
+	printHZ(370+80+80,104,"熄火",32,WHITE);				//"misfire"
+	printHZ(370,104,"行驶",32,DARKGRAY);				//"drive"
+	printHZ(370+80,104,"制动",32,DARKGRAY);				//"stop"
 	save_bk_mou(mouseX,mouseY);
 	drawmous(mouseX,mouseY);
 
@@ -399,9 +407,9 @@ void turnToState1(void)
 	bar(370, 104,602, 137);
 	setfillstyle(SOLID_FILL,DARKGRAY);
 	bar(530, 104, 602, 137);
-	printHZ(370+80+80,104,"熄火",32,WHITE);
-	printHZ(370,104,"行驶",32,DARKGRAY);
-	printHZ(370+80,104,"制动",32,DARKGRAY);
+	printHZ(370+80+80,104,"熄火",32,WHITE);				//"misfire"
+	printHZ(370,104,"行驶",32,DARKGRAY);				//"drive"
+	printHZ(370+80,104,"制动",32,DARKGRAY);				//"stop"
 	save_bk_mou(mouseX,mouseY);
 	drawmous(mouseX,mouseY);
 
@@ -421,9 +429,9 @@ void turnToState2(void)
 	bar(370, 104,602, 137);
 	setfillstyle(SOLID_FILL,DARKGRAY);
 	bar(451,104,522,137);
-	printHZ(370+80,104,"制动",32,WHITE);
-	printHZ(370,104,"行驶",32,DARKGRAY);
-	printHZ(370+80+80,104,"熄火",32,DARKGRAY);
+	printHZ(370+80,104,"制动",32,WHITE);			//"stop"
+	printHZ(370,104,"行驶",32,DARKGRAY);			//"drive"
+	printHZ(370+80+80,104,"熄火",32,DARKGRAY);			//"misfire"
 	save_bk_mou(mouseX,mouseY);
 	drawmous(mouseX,mouseY);
 

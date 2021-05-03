@@ -91,7 +91,7 @@ int p14(PCAR pCar)
                 isInCardID = 0;
                 isInPassword = 0;
             }	
-
+		
             if(mouse_press(261,408,261+48*2*1.1+2,408+48) == 1)       //点击充值
             {
                 if(strlen(cardIDText) == 0)
@@ -123,18 +123,8 @@ int p14(PCAR pCar)
                     popWindow_withoutFlush(&buf,&isPopWindow,"余额非法");
                     continue;
                 }
-
-                //满足所有条件才能充值成功
-                popWindow_withoutFlush(&buf,&isPopWindow,"充值成功");
-                pCar->balance += atof(balanceText);
-                updateBalance(pCar);
-                isPayFlag = 1;
-                continue;
-
-            } 
-            if(mouse_press(261,408,261+48*2*1.1+2,408+48) == 1)
-            {
-                if((isPayFlag = card_check(cardIDText,passwordText)) == 1)
+				
+				if((isPayFlag = card_check(cardIDText,passwordText)) == 1)
                	{
                		popWindow_withoutFlush(&buf,&isPopWindow,"充值成功");
                		pCar->balance += atof(balanceText);
@@ -146,8 +136,8 @@ int p14(PCAR pCar)
 				{
 					popWindow_withoutFlush(&buf,&isPopWindow,"充值失败");
 				}
-			}
-            
+                continue;
+            }
 					
 
             if(mouse_press(400,408,400+48*2*1.1+2,408+48) == 1)			//退出

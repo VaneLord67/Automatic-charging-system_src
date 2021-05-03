@@ -13,11 +13,10 @@
 #include"mouse.h"
 #include"hz.h"
 
-
 #define MAX_ELECTRICITY 70.0			//最大电量
 #define WARNING_ELECTRICITY 15.0		//警告电量
 #define PRICE_PER_KWH 0.5       //一度电的价钱
-#define SHOWMOUSE					//若define了则显示鼠标坐标
+// #define SHOWMOUSE					//若define了则显示鼠标坐标
 #define DEBUGMODE					//若define了则进入DEBUG模式。
 
 //汽车结构声明
@@ -173,7 +172,7 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s);
 ///////////////////////////////////
 int popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s);
 
-
+///////////////////////////////////
 //函数名：recordOut
 //功能：回到初始界面/退出程序 后写入时间到record.txt
 //入口参数：void

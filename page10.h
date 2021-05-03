@@ -3,12 +3,7 @@
 
 #include"myf.h"
 
-/*
-函数名：updateBalance
-功能：更新用户余额
-入口参数：用户指针pCar
-返回值：void
-*/
+//引用page14的函数
 void updateBalance(PCAR pCar);
 
 /*

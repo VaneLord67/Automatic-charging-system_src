@@ -29,14 +29,11 @@
 ///////////////////////////////////
 void printHZ(int x, int y,char *s,int flag,int color)
 {
+	//check s is hanzi
 	//判断s是否全为汉字，非严格判断，因为该if下s如果有偶数个英文字符混在里面也会被判断为false
 	if( strlen(s) % 2 != 0)
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					
-		outtextxy(10,10,"String cannot include english char!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("String cannot include english char!");
 	}
 	int length = strlen(s) / 2;
 	int part = flag + HZ_OFFSET;
@@ -140,7 +137,7 @@ void showMousePos(void)
 	if(!(xn == mouseX && yn == mouseY))
 	{
 		setfillstyle(SOLID_FILL,BLACK);
-		bar(0,0,80,46);     //清除原有的数字
+		bar(0,0,80,46);     //clear old figure清除原有的数字
 		sprintf(x,"%d",mouseX);
 		sprintf(y,"%d",mouseY);
 		settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
@@ -167,7 +164,7 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 		ch = getch();
 		switch(ch)
 		{
-			case 8:  						//退格键
+			case 8:  						//backspace 退格键
 				if( (*inputLength) > 0)
 				{
 					text[(*inputLength) - 1] = '\0';
@@ -189,8 +186,8 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 					
 				}
 				break;
-			case 13:						//回车
-			case 27:						//ESC
+			case 13:						//enter 回车
+			case 27:						//esc ESC
 				(*inputFlag) = 0;
 				break;
 			default:
@@ -235,7 +232,7 @@ void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inpu
 		ch = getch();
 		switch(ch)
 		{
-			case 8:  						//退格键
+			case 8:  						//backspace 退格键
 				if( (*inputLength) > 0)
 				{
 					text[(*inputLength) - 1] = '\0';
@@ -257,8 +254,8 @@ void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inpu
 					
 				}
 				break;
-			case 13:						//回车
-			case 27:						//ESC
+			case 13:						//enter 回车
+			case 27:						//esc ESC
 				(*inputFlag) = 0;
 				break;
 			default:
@@ -303,7 +300,7 @@ void inputPassword(int * x_input, int * y_input,int * inputFlag,int * inputLengt
 		ch = getch();
 		switch(ch)
 		{
-			case 8:  						//退格键
+			case 8:  						//backspace 退格键
 				if( (*inputLength) > 0)
 				{
 					text[(*inputLength) - 1] = '\0';
@@ -325,8 +322,8 @@ void inputPassword(int * x_input, int * y_input,int * inputFlag,int * inputLengt
 					
 				}
 				break;
-			case 13:						//回车
-			case 27:						//ESC
+			case 13:						//enter 回车
+			case 27:						//esc ESC
 				(*inputFlag) = 0;
 				break;
 			default:
@@ -379,7 +376,7 @@ void popWindow(void(*draw_screen)(void), int * isPopWindow, char *s)
 	if((*isPopWindow) == 0)
 	{
 		clrmous(mouseX,mouseY);
-		setcolor(BLACK);
+		setfillstyle(SOLID_FILL,LIGHTCYAN);
 		bar(166,100,474,344); 	//清除弹窗后面的背景
 		setcolor(DARKGRAY);
 		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -455,7 +452,7 @@ int popWindow_withoutFlush(void ** buf, int * isPopWindow, char *s)
 			clrmous(mouseX,mouseY);
 			setcolor(BLACK);
 			
-			bar(166,100,474,344); 	//清除原有的弹窗
+			bar(166,100,474,344); 	//clear old popWindow 清除原有的弹窗
 			
 			putimage(166,100,(*buf),COPY_PUT);
 			free((*buf));
@@ -500,11 +497,7 @@ void recordWrite(char * p,PCAR pCar)
 	
 	if ((fp = fopen("record.txt", "r")) == NULL)
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open record.txt error!");
 	}
 	
 	while ( (ch = getc(fp)) != EOF)
@@ -529,11 +522,7 @@ void recordWrite(char * p,PCAR pCar)
 	
 	if ((fp = fopen("record.txt", "a")) == NULL)
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open record.txt error!");
 	}
 	
 	fprintf(fp, "[%d]\nUSER:%s\n", max + 1, p);
@@ -598,10 +587,18 @@ int testStringIsAllNumbers(char * str)
 */
 int testStringIsFloat(char * str)
 {
+	char * p = NULL;
 	if(strspn(str,".0123456789")==strlen(str) && strlen(str) > 0)
 	{
-		if(str[0] != '.' && str[strlen(str) - 3] == '.')
+		if(str[0] != '.')
 		{
+			if( (p = strchr(str,'.')) != NULL)
+			{
+				if(strlen(p) > 3)
+				{
+					return 0;
+				}
+			}
 			return 1;
 		}
 		return 0;

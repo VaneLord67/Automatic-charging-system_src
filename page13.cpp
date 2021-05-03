@@ -65,6 +65,18 @@ void page13_screen()
     cleardevice();
 	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
+	
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	int a[] = {135,140,175,140,175,190,155,180,135,190,135,140};
+	drawpoly(6,a);
+	circle(152,157,8);
+	line(158,163,168,173);
+	
+	int b[] = {135,230,175,230,175,280,155,270,135,280,135,230};
+	drawpoly(6,b);
+	int c[] = {155,240,147,252,163,252,155,264};
+	drawpoly(4,c);
+	
     setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 
 	printHZ_withoutRec(200,20,"管理员界面",48,DARKGRAY);

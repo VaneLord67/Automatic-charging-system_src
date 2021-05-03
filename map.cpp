@@ -10,13 +10,6 @@
 */
 int p12(PCAR pCar)
 {
-	#ifdef DEBUGMODE
-	//pCar->electricityLeft = 70;
-	#endif
-
-	// int xCurrentCenter = 240;
-	// int yCurrentCenter = 240;
-	
 	int page = 12;
 	MGraph G;
 	int xTemp;
@@ -28,7 +21,6 @@ int p12(PCAR pCar)
 	int isPopWindow = 0;
 	int hasWarning = 0;
 	int idx = -1;
-	// int num = 0;
 
 	createMGraphFromFile(&G);
 
@@ -41,17 +33,15 @@ int p12(PCAR pCar)
 	mallocBuf(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,pCar->x + CAR_SIZE,pCar->y + CAR_SIZE,&buf);
 	drawMapCar(pCar);
 
-	
 	save_bk_mou(mouseX,mouseY);
 	drawmous(mouseX,mouseY);
 	
 	while(page == 12)
 	{
 		#ifdef SHOWMOUSE
-		//showMousePos();
+		showMousePos();
 		#endif
 		newmouse(&mouseX,&mouseY,&press);
-		
 		
 		if(0 == isPopWindow)
 		{
@@ -100,32 +90,32 @@ int p12(PCAR pCar)
 				lightOffChargeFullButton();
 			}
 			
-			if(mouse_press(506,422,611,465) == 1)		//点击返回按钮
+			if(mouse_press(506,422,611,465) == 1)		//press back button 点击返回按钮
 			{
 				if(buf != NULL)
 				{
-					free(buf);						//释放图像内存
+					free(buf);						//free buf 释放图像内存
 				}
 				page = 4;
 				pCar->k = 20;
 				pCar->runState = 2;			
 				pCar->speed = 0;
 			}
-			if(mouse_press(506,222,612,270) == 1 && G.vexs[getCarInWhichVex(pCar,&G)].chargeFlag == 1)		//点击充电
+			if(mouse_press(506,222,612,270) == 1 && G.vexs[getCarInWhichVex(pCar,&G)].chargeFlag == 1)		//press charge 点击充电
 			{
 				if(pCar->electricityLeft == MAX_ELECTRICITY)
 				{
-					popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量已满");
+					popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量已满");		//pop show "elec is full"
 					continue;
 				}
 				pCar->runState = 0;
 				page = 15;
 			}
-			if(mouse_press(506,322,614,371) == 1 && G.vexs[getCarInWhichVex(pCar,&G)].chargeFlag == 2)		//点击换电
+			if(mouse_press(506,322,614,371) == 1 && G.vexs[getCarInWhichVex(pCar,&G)].chargeFlag == 2)		//press change 点击换电
 			{
 				if(pCar->electricityLeft == MAX_ELECTRICITY)
 				{
-					popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量已满");
+					popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量已满");	//pop show "elec is full"
 					continue;
 				}
 				pCar->runState = 0;
@@ -133,7 +123,7 @@ int p12(PCAR pCar)
 			}
 			if(pCar->electricityLeft < WARNING_ELECTRICITY && hasWarning == 0)
 			{
-				popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量告急");
+				popWindow_withoutFlush(&popWindowBuf,&isPopWindow,"电量告急");	//pop show "elec is urgent"
 				hasWarning = 1;
 			}
 			/*
@@ -247,11 +237,7 @@ void createMGraphFromFile(MGraph * G)
 	fp = fopen("map.txt","r");
 	if(fp == NULL)
 	{
-		//settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		//settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		//outtextxy(10,10,"Can't open file!Press any key to quit...");
-		//getch();
-		exit(1);
+		exitFunc("open map.txt error!");
 	}
 	fgets(temp,20,fp);
 	apartSpaceRead(temp,&G->numVertexes,&G->numEdges);
@@ -276,7 +262,6 @@ void createMGraphFromFile(MGraph * G)
 		j_x = (double)G->vexs[j].x;
 		j_y = (double)G->vexs[j].y;
 		w = sqrt(pow(i_x - j_x, 2) + pow(i_y - j_y, 2));
-		//w = sqrt((G->vexs[i].x - G->vexs[j].x) * (G->vexs[i].x - G->vexs[j].x) + (G->vexs[i].y - G->vexs[j].y) * (G->vexs[i].y - G->vexs[j].y) );
 		G->arc[i][j] = w;
 		G->arc[j][i] = G->arc[i][j];
 	}
@@ -298,8 +283,7 @@ int * findWay(int dest, Patharc* p,int * wayLength,MGraph *G)
 	
 	if (way == NULL)
 	{
-		fprintf(stderr, "malloc error!\n");
-		exit(EXIT_FAILURE);
+		exitFunc("malloc way error!");
 	}
 
 	for(i=0;i<G->numVertexes;i++)
@@ -509,8 +493,6 @@ void drawNodeLine(MGraph * G)
 			{
 				setcolor(YELLOW);
 				setlinestyle(SOLID_LINE,0,THICK_WIDTH);
-				// line(G->vexs[i].x-ROUND_RADIUS,G->vexs[i].y-ROUND_RADIUS,G->vexs[j].x+ROUND_RADIUS,G->vexs[j].y-ROUND_RADIUS);
-				// line(G->vexs[i].x-ROUND_RADIUS,G->vexs[i].y+ROUND_RADIUS,G->vexs[j].x+ROUND_RADIUS,G->vexs[j].y+ROUND_RADIUS);
 				line(G->vexs[i].x,G->vexs[i].y,G->vexs[j].x,G->vexs[j].y);
 				setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 			}
@@ -538,12 +520,12 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 
 	clrmous(mouseX,mouseY);	
 	
-	if(G->vexs[i].chargeFlag == 1) 	//到达充电桩,点亮充电按钮
+	if(G->vexs[i].chargeFlag == 1) 	//light charge button 到达充电桩,点亮充电按钮
 	{
 		lightChargeButton();
 		lightOffChargeFullButton();
 	}
-	else if(G->vexs[i].chargeFlag == 2)	//到达换电桩，点亮换电按钮
+	else if(G->vexs[i].chargeFlag == 2)	//light change button 到达换电桩，点亮换电按钮
 	{
 		lightChargeFullButton();
 		lightOffChargeButton();
@@ -553,9 +535,6 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 		lightOffChargeButton();
 		lightOffChargeFullButton();
 	}
-	
-	(*xTemp) = G->vexs[i].x;						//获取鼠标点击的地图结点的位置
-	(*yTemp) = G->vexs[i].y;
 	
 	carInWhichVex = getCarInWhichVex(pCar,G);		//得到汽车所处地图结点下标
 	if(carInWhichVex == -1)
@@ -587,12 +566,12 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 				{
 					break;
 				}
-				putimage(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,(*buf),0);//恢复被旧车覆盖的图像
+				putimage(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,(*buf),0);//regain image covered by old car 恢复被旧车覆盖的图像
 				free((*buf));
 				
 				changeCarPos(&(pCar->y),(*yTemp));				
 				mallocBuf(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,pCar->x + CAR_SIZE,pCar->y + CAR_SIZE,buf);
-				drawMapCar(pCar);//画新一个位置的车					
+				drawMapCar(pCar);//draw a new position car 画新一个位置的车					
 				delay(100);
 			}
 		}
@@ -607,7 +586,7 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 				{
 					break;
 				}
-				putimage(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,(*buf),0);//恢复被旧车覆盖的图像
+				putimage(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,(*buf),0);//regain image covered by old car 恢复被旧车覆盖的图像
 				free((*buf));
 
 				if(fabs(kLine > 4))
@@ -618,11 +597,6 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 				{
 					changeCarPos(&(pCar->x),(*xTemp));
 				}
-				// if(pCar->y == (int)(kLine * pCar->x + bLine))
-				// {
-				// 	pCar->x = *xTemp;
-				// 	pCar->y = *yTemp;
-				// }
 				if(fabs(pCar->x - (*xTemp)) <= 2)
 				{
 					pCar->x = *xTemp;
@@ -630,15 +604,13 @@ void carMoveAfterClick(PCAR pCar,MGraph * G,int * xTemp,int * yTemp,void ** buf,
 				}
 				else
 				{
-					pCar->y = (int)(kLine * pCar->x + bLine);//车的坐标x,y随着直线变化
+					pCar->y = (int)(kLine * pCar->x + bLine);//car's x,y change with line 车的坐标x,y随着直线变化
 				}
-				
 				mallocBuf(pCar->x - CAR_SIZE,pCar->y - CAR_SIZE,pCar->x + CAR_SIZE,pCar->y + CAR_SIZE,buf);
-				drawMapCar(pCar);//画新一个位置的车		
+				drawMapCar(pCar);//draw a new position car 画新一个位置的车		
 				delay(100);
 			}		
-			
-
+		
 		}
 	}
 	free(way);
@@ -679,11 +651,11 @@ int getCarInWhichVex(PCAR pCar,MGraph * G)
 	{
 		if(pCar->x > G->vexs[i].x-ROUND_RADIUS && pCar->x < G->vexs[i].x+ROUND_RADIUS && pCar->y > G->vexs[i].y-ROUND_RADIUS && pCar->y < G->vexs[i].y+ROUND_RADIUS)
 		{
-			//找到就返回结点的下标
+			//find and return the idx of vex 找到就返回结点的下标
 			return i;
 		}
 	}
-	//没找到时返回-1
+	//fail to find,return -1 没找到时返回-1
 	return -1;
 }
 
@@ -763,7 +735,6 @@ void changeCarPosSlow(int * pos,int temp)
 			(*pos) = temp;
 		}
 	}
-	
 	return;
 }
 
@@ -777,27 +748,27 @@ void page12_screen(void)
 {
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
-	printHZ(506,222,"充电",48,DARKGRAY);
-	printHZ(506,322,"换电",48,DARKGRAY);
-	printHZ(506, 422,"返回",48,DARKGRAY);
+	printHZ(506,222,"充电",48,DARKGRAY);		//"charge"
+	printHZ(506,322,"换电",48,DARKGRAY);		//"change"
+	printHZ(506, 422,"返回",48,DARKGRAY);		//"back"
 	
-	//绘制提示信息
+	//draw remind infomation 绘制提示信息
 	setfillstyle(SOLID_FILL,GREEN);
 	barRecWithCenter(518,40,CAR_SIZE);
 	setfillstyle(SOLID_FILL,BLACK);
-	printHZ_withoutRec(530, 35,"您的位置",16,DARKGRAY);
+	printHZ_withoutRec(530, 35,"您的位置",16,DARKGRAY);		//"your position"
 	
 	setfillstyle(SOLID_FILL,RED);
 	pieslice(518,100,1,360,20);
 	setcolor(RED);
 	line(518,100,538,100);
-	printHZ_withoutRec(545, 95,"充电站",16,DARKGRAY);
+	printHZ_withoutRec(545, 95,"充电站",16,DARKGRAY);		//"charge station"
 		
 	setfillstyle(SOLID_FILL,BLUE);
 	pieslice(518,170,1,360,20);
 	setcolor(BLUE);
 	line(518,170,538,170);
-	printHZ_withoutRec(545, 165,"换电站",16,DARKGRAY);
+	printHZ_withoutRec(545, 165,"换电站",16,DARKGRAY);		//"change station"
 	
 	setfillstyle(SOLID_FILL,BLACK);
 	setcolor(DARKGRAY);

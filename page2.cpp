@@ -37,12 +37,13 @@ int p2(PCAR pCar)
 	while(page == 2)
 	{
 		newmouse(&mouseX,&mouseY,&press);
+		#ifdef SHOWMOUSE
 		showMousePos();
+		#endif
 		
 		if(1 == isInUserText)
 		{
 			inputText(&x_userTextInput,&y_userTextInput,&isInUserText, &userTextLength,userText,DARKGRAY);
-			
 		}
 		else if(1 == isInPasswordText)
 		{
@@ -52,7 +53,6 @@ int p2(PCAR pCar)
 		{
 			DiscardInput();
 		}
-		
 		if(0 == isPopWindow)			//没有弹窗时进入if
 		{
 			//点击输入框之外的地方取消输入法
@@ -167,6 +167,15 @@ void page2_screen(void)
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	circle(40,100,13);
+	line(20,140,60,140);
+	line(20,140,33,111);
+	line(60,140,47,111);            //用户图标 
+	circle(41,241,14);
+	line(40,240-13,40,195);
+	line(40,195,55,195);
+	line(40,205,55,205);            //密码图标 
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	rectangle(79,77,223,148);
 	rectangle(246,77,567,148);
@@ -260,8 +269,6 @@ int Login(char * userText, char * passwordText,int adminMode,PCAR pCar)
 			break;
 		}
 	}
-
-	
 	fclose(fp);
 	return 0;
 }

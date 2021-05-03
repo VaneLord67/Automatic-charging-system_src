@@ -63,7 +63,19 @@ void page8_screen(void)
 	setcolor(DARKGRAY);
 	setfillstyle(SOLID_FILL,DARKGRAY);
 	printHZ_withoutRec(200,20,"个人中心",48,DARKGRAY);
-	
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	int a[] = {130,150,170,150,170,200,150,190,130,200,130,150};
+	drawpoly(6,a);
+	circle(147,167,8);
+	line(153,173,163,183);
+	int b[] = {150,230,190,230,190,280-15,190-15,280,150,280,150,230};
+	drawpoly(6,b);
+	line(160,250,180,250);
+	line(160,260,180,260);
+	line(170,250,160,240);
+	line(170,250,180,240);
+	line(170,250,170,270);
+
 	bar(200-10,160,200+32*6+30,160+32);
 	bar(243-10-15,240,243+32*4+20-15,240+32);
 	floodfill(200,160,DARKGRAY);

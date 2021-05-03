@@ -10,7 +10,7 @@
 入口参数：汽车结构体指针pCar
 返回值：int类型，返回page的值
 */
-int p6(PCAR pCar)
+int p6(PCAR pCar)		//mileage cal func
 {
 	int page = 6;
 	int temperatureTemp = pCar->temperature;
@@ -117,7 +117,7 @@ int p6(PCAR pCar)
 			drawmous(mouseX,mouseY);
 		}
 		
-		if(mouse_press(170,250,212,282) == 1)				//减少车外温度
+		if(mouse_press(170,250,212,282) == 1)				//down outside car temperature 减少车外温度
 		{
 			if(pCar->temperature >= 10 && pCar->temperature <= 30)
 			{
@@ -128,7 +128,7 @@ int p6(PCAR pCar)
 			}
 		}
 		
-		if(mouse_press(316,250,350,282) == 1)				//增加车外温度
+		if(mouse_press(316,250,350,282) == 1)				//up outside car temperature增加车外温度
 		{
 			if(pCar->temperature >= 0 && pCar->temperature < 30)
 			{
@@ -138,19 +138,17 @@ int p6(PCAR pCar)
 			}
 		}
 		
-		if(mouse_press(390,408,400+48+48+10,408+48) == 1)			//退出
+		if(mouse_press(390,408,400+48+48+10,408+48) == 1)			//quit 退出
 		{
 			page = 3;
 		}
 		
-		if(mouse_press(112,408,122+48+48+10,408+48) == 1)			//返回
+		if(mouse_press(112,408,122+48+48+10,408+48) == 1)			//back 返回
 		{
 			page = 4;
 		}
 		
-		
 	}
-	
 	return page;
 }
 
@@ -160,19 +158,28 @@ int p6(PCAR pCar)
 入口参数：void
 返回值：void
 */
-void page6_screen(void)
+void page6_screen(void)		//mileage cal func draw
 {
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
-	printHZ_withoutRec(180, 10,"里程计算器",48,DARKGRAY);
-	printHZ_withoutRec(375, 70,"公里",32,DARKGRAY);
-	printHZ_withoutRec(30,150,"剩余电量：",24,DARKGRAY);
-	printHZ_withoutRec(30,250,"车外温度：",24,DARKGRAY);
-	printHZ_withoutRec(400,140,"空调：",24,DARKGRAY);
-	printHZ_withoutRec(400,190,"车灯：",24,DARKGRAY);
-	printHZ_withoutRec(400,240,"音乐：",24,DARKGRAY);
-	printHZ_withoutRec(400,290,"天窗：",24,DARKGRAY);
-	setcolor(DARKGRAY);
+	setcolor(DARKGRAY);	
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	rectangle(40,180,130,220);
+	rectangle(130,185,138,215);
+	line(47,190,47,210);
+	line(115,190,115,210);
+	line(105,200,125,200);
+	circle(40,300,5);
+	rectangle(44,298,132,302);
+	printHZ_withoutRec(180, 10,"里程计算器",48,DARKGRAY);			//"mileage cal"
+	printHZ_withoutRec(375, 70,"公里",32,DARKGRAY);					//"km"
+	printHZ_withoutRec(30,150,"剩余电量：",24,DARKGRAY);			//"left elec"
+	printHZ_withoutRec(30,250,"车外温度：",24,DARKGRAY);			//"outside car temperature"
+	printHZ_withoutRec(400,140,"空调：",24,DARKGRAY);				//"airconditioning"
+	printHZ_withoutRec(400,190,"车灯：",24,DARKGRAY);				//"car light"
+	printHZ_withoutRec(400,240,"音乐：",24,DARKGRAY);				//"music"
+	printHZ_withoutRec(400,290,"天窗：",24,DARKGRAY);				//"sky window"
+	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	rectangle(170,250,350,280);
 	circle(520,150,7);
 	circle(520,200,7);
@@ -183,7 +190,7 @@ void page6_screen(void)
 	line(324,259,338,268);
 	line(338,268,324,275);
 	
-	printHZ_withoutRec(285,258,"℃",24,DARKGRAY);
+	printHZ_withoutRec(285,258,"℃",24,DARKGRAY);			//"she shi du"
 	
 	printText_withoutRec(300,155,"KWh",2,DARKGRAY);
 	
@@ -192,8 +199,8 @@ void page6_screen(void)
 	bar(390,408,400+48*2*1.1+2,408+48);
 	floodfill(123,409,DARKGRAY); 
 	floodfill(401,409,DARKGRAY);
-	printHZ(122, 408,"返回",48,WHITE);
-	printHZ(400, 408,"退出",48,WHITE);
+	printHZ(122, 408,"返回",48,WHITE);				//"back"
+	printHZ(400, 408,"退出",48,WHITE);				//"quit"
 	
 	return;
 }

@@ -5,18 +5,18 @@
 
 
 /*
-å‡½æ•°åï¼špage6_screen
-åŠŸèƒ½ï¼šé‡Œç¨‹è®¡ç®—ç•Œé¢ç»˜åˆ¶
-å…¥å£å‚æ•°ï¼švoid
-è¿”å›žå€¼ï¼švoid
+º¯ÊýÃû£ºpage6_screen
+¹¦ÄÜ£ºÀï³Ì¼ÆËã½çÃæ»æÖÆ
+Èë¿Ú²ÎÊý£ºvoid
+·µ»ØÖµ£ºvoid
 */
 void page6_screen(void);
 
 /*
-å‡½æ•°åï¼šp6
-åŠŸèƒ½ï¼šé‡Œç¨‹è®¡ç®—ç•Œé¢çš„åŠŸèƒ½
-å…¥å£å‚æ•°ï¼šæ±½è½¦ç»“æž„ä½“æŒ‡é’ˆpCar
-è¿”å›žå€¼ï¼šintç±»åž‹ï¼Œè¿”å›žpageçš„å€¼
+º¯ÊýÃû£ºp6
+¹¦ÄÜ£ºÀï³Ì¼ÆËã½çÃæµÄ¹¦ÄÜ
+Èë¿Ú²ÎÊý£ºÆû³µ½á¹¹ÌåÖ¸ÕëpCar
+·µ»ØÖµ£ºintÀàÐÍ£¬·µ»ØpageµÄÖµ
 */
 int p6(PCAR pCar);
 

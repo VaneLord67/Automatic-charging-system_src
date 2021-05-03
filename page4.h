@@ -51,12 +51,7 @@ void turnToState2(void);
 */
 void turnOffCarFacility(PCAR pCar);
 
-/*
-函数名：carInfoWrite
-功能：汽车剩余电量、位置写入文件carinfo.txt
-入口参数：汽车结构体指针pCar
-返回值：void
-*/
+//引用main里的函数
 void carInfoWrite(PCAR pCar);
 
 #endif

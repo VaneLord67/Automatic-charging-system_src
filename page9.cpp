@@ -10,7 +10,7 @@
 入口参数：汽车指针pCar
 返回值：int类型，返回page的值
 */
-int p9(PCAR pCar)
+int p9(PCAR pCar)		//record query func
 {
 	int page = 9;
 	int maxPage = 1;				//最大页数
@@ -57,7 +57,7 @@ int p9(PCAR pCar)
 		showMousePos();
 		#endif
 		
-		if(mouse_press(140,350,186,390) == 1)			//减少页数
+		if(mouse_press(140,350,186,390) == 1)			//down page 减少页数
 		{
 			if(pageCurrent > 1)
 			{
@@ -101,71 +101,50 @@ int p9(PCAR pCar)
 			}
 		}
 		
-		if(mouse_press(432,350,487,390) == 1)			//增加页数
+		if(mouse_press(432,350,487,390) == 1)			//up page figure 增加页数
 		{
 			if(pageCurrent < maxPage)
 			{
 				pageCurrent += 1;
-				setfillstyle(SOLID_FILL,BLACK);
-				bar(20,90,383,347);				//刷新界面
-
-				if(pCar->isAdmin == 0)
-				{
-					findRecordForUser(pageCurrent,skip);
-				}
-				else if(pCar->isAdmin == 1)
-				{
-					findRecordForAdmin(pageCurrent,max);
-				}
-				
-				bar(209,360,310,388);			//刷新当前页数
-				sprintf(pageCurrentString,"%d",pageCurrent);
-				printText_withoutRec(210,360,pageCurrentString,3,DARKGRAY);
-				delay(200);
 			}
 			else if(pageCurrent == maxPage)
 			{
 				pageCurrent = 1;
-				setfillstyle(SOLID_FILL,BLACK);
-				bar(20,90,383,347);				//刷新界面
-				
-				if(pCar->isAdmin == 0)
-				{
-					findRecordForUser(pageCurrent,skip);
-				}
-				else if(pCar->isAdmin == 1)
-				{
-					findRecordForAdmin(pageCurrent,max);
-				}
-				
-				bar(209,360,310,388);			//刷新当前页数
-				sprintf(pageCurrentString,"%d",pageCurrent);
-				printText_withoutRec(210,360,pageCurrentString,3,DARKGRAY);
-				delay(200);
-				
 			}
+			setfillstyle(SOLID_FILL,BLACK);
+			bar(20,90,383,347);				//fflush screen 刷新界面
+			if(pCar->isAdmin == 0)
+			{
+				findRecordForUser(pageCurrent,skip);
+			}
+			else if(pCar->isAdmin == 1)
+			{
+				findRecordForAdmin(pageCurrent,max);
+			}
+			bar(209,360,310,388);			//fflush current page figure 刷新当前页数
+			sprintf(pageCurrentString,"%d",pageCurrent);
+			printText_withoutRec(210,360,pageCurrentString,3,DARKGRAY);
+			delay(200);
 		}
 		
-		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出
+		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//quit 退出
 		{
 			page = 3;
 		}
 		
-		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//返回
+		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//back 返回
 		{
 
 			if(pCar->isAdmin == 0)
 			{
-				page = 4;			//是用户则返回到数据显示界面
+				page = 4;			//if common user,back to show data screen .   是用户则返回到数据显示界面
 			}
 			else if(pCar->isAdmin == 1)
 			{
-				page = 13;			//是管理员则返回到管理员界面
+				page = 13;			//if admin,back to admin screen. 是管理员则返回到管理员界面
 			}
 		}
-		
 	}
-	
 	return page;
 }
 
@@ -175,12 +154,12 @@ int p9(PCAR pCar)
 入口参数：void
 返回值：void
 */
-void page9_screen(void)
+void page9_screen(void)		//record query screen draw
 {
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
-	printHZ_withoutRec(150,20,"行驶记录查询",48,DARKGRAY);
+	printHZ_withoutRec(150,20,"行驶记录查询",48,DARKGRAY);		//"driving record query"
 	
 	rectangle(112,350,508,392);
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
@@ -196,8 +175,8 @@ void page9_screen(void)
 	bar(390,408,400+48*2*1.1+2,408+48);
 	floodfill(123,409,DARKGRAY); 
 	floodfill(401,409,DARKGRAY);
-	printHZ(122, 408,"返回",48,WHITE);
-	printHZ(400, 408,"退出",48,WHITE);
+	printHZ(122, 408,"返回",48,WHITE);					//"back"
+	printHZ(400, 408,"退出",48,WHITE);					//"quit"
 	
 	return;
 }
@@ -220,11 +199,7 @@ int maxPageQuery(int * getMax)
 	//打开文件失败则退出程序
 	if( fp == NULL )
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open record.txt error!");
 	}
 	memset(temp,'\0',sizeof(temp));
 	while ( (ch = getc(fp)) != EOF)
@@ -351,11 +326,11 @@ void findRecordForUser(int pageCurrent,int * skip)
 			y += 30;
 			setfillstyle(SOLID_FILL,BLACK);
 			bar(20,110 + k * 120,63,130 + k * 120);
-			printHZ_withoutRec(25,110 + k * 120 + 5,"用户",16,DARKGRAY);
+			printHZ_withoutRec(25,110 + k * 120 + 5,"用户",16,DARKGRAY);		//"user"
 			bar(20,140 + k * 120,63,160 + k * 120);
-			printHZ_withoutRec(25,140 + k * 120 + 5,"里程",16,DARKGRAY);
+			printHZ_withoutRec(25,140 + k * 120 + 5,"里程",16,DARKGRAY);		//"mileage"
 			bar(20,170 + k * 120,63,190 + k * 120);
-			printHZ_withoutRec(25,170 + k * 120 + 5,"时间",16,DARKGRAY);
+			printHZ_withoutRec(25,170 + k * 120 + 5,"时间",16,DARKGRAY);		//"time"
 			save_bk_mou(mouseX,mouseY);
 			drawmous(mouseX,mouseY);
 
@@ -427,11 +402,11 @@ void findRecordForAdmin(int pageCurrent,int max)
 		y += 30;
 		setfillstyle(SOLID_FILL,BLACK);
 		bar(20,110 + k * 120,63,130 + k * 120);
-		printHZ_withoutRec(25,110 + k * 120 + 5,"用户",16,DARKGRAY);
+		printHZ_withoutRec(25,110 + k * 120 + 5,"用户",16,DARKGRAY);		//"user"
 		bar(20,140 + k * 120,63,160 + k * 120);
-		printHZ_withoutRec(25,140 + k * 120 + 5,"里程",16,DARKGRAY);
+		printHZ_withoutRec(25,140 + k * 120 + 5,"里程",16,DARKGRAY);		//"mileage"
 		bar(20,170 + k * 120,63,190 + k * 120);
-		printHZ_withoutRec(25,170 + k * 120 + 5,"时间",16,DARKGRAY);
+		printHZ_withoutRec(25,170 + k * 120 + 5,"时间",16,DARKGRAY);		//"time"
 		save_bk_mou(mouseX,mouseY);
 		drawmous(mouseX,mouseY);
 

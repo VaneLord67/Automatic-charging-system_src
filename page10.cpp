@@ -293,11 +293,7 @@ void CarElecWrite_charge(char * p, PCAR pCar, double *elecBefore)
 	
 	if ((fp = fopen("elec.txt", "r")) == NULL)
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);				
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open elec.txt error!");
 	}
 	
 	while ( (ch = getc(fp)) != EOF)
@@ -322,11 +318,7 @@ void CarElecWrite_charge(char * p, PCAR pCar, double *elecBefore)
 	
 	if ((fp = fopen("elec.txt", "a")) == NULL)
 	{
-		settextjustify(LEFT_TEXT,TOP_TEXT);          //左部对齐，顶部对齐
-		settextstyle(GOTHIC_FONT,HORIZ_DIR,1);					//黑体笔划输出，水平输出，24*24点阵
-		outtextxy(10,10,"Can't open file!Press any key to quit...");
-		getch();
-		exit(1);
+		exitFunc("open elec.txt error!");
 	}
 	
 	

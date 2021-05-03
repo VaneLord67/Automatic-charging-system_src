@@ -16,26 +16,28 @@ int p0(void)
 	while(page == 0)
 	{
 		newmouse(&mouseX,&mouseY,&press);
+		#ifdef SHOWMOUSE
 		showMousePos();
+		#endif
 		
-		if(mouse_press(40,400,200,440) == 1)      //µã»÷×¢²á°´Å¥
+		if(mouse_press(40,400,200,440) == 1)      //press register buttonµã»÷×¢²á°´Å¥	
 		{
 			page = 1;
 		}
-		else if(mouse_press(440,400,600,440) == 1)        //µã»÷ÍË³ö°´Å¥
+		else if(mouse_press(440,400,600,440) == 1)        //press quit button µã»÷ÍË³ö°´Å¥
 		{
 			page = 3;
 		}
-		else if(mouse_press(240,400,400,440) == 1)			//µã»÷µÇÂ¼°´Å¥
+		else if(mouse_press(240,400,400,440) == 1)			//press login button µã»÷µÇÂ¼°´Å¥
 		{
 			page = 2;
 		}
 		else if(mouse_press(40,400,200,440) == 2)
 		{
-			if(num == 0)               //·ÀÖ¹·´¸´±êÁÁ
+			if(num == 0)               //void light over two times ·ÀÖ¹·´¸´±êÁÁ
 			{
 				button(40,400,200,440,DARKGRAY,WHITE);
-				puthz(80,404,"×¢²á",32,40,DARKGRAY);
+				puthz(80,404,"×¢²á",32,40,DARKGRAY);		//puthz "register"
 				num = 1;
 			} 
 			continue;
@@ -45,7 +47,7 @@ int p0(void)
 			if(num == 0)               
 			{
 				button(440,400,600,440,DARKGRAY,WHITE);
-				puthz(480,404,"ÍË³ö",32,40,DARKGRAY);
+				puthz(480,404,"ÍË³ö",32,40,DARKGRAY);		//puthz "quit"
 				num = 2;
 			} 
 			continue;
@@ -55,7 +57,7 @@ int p0(void)
 			if(num == 0)               
 			{
 				button(240,400,400,440,DARKGRAY,WHITE);
-				puthz(280,404,"µÇÂ¼",32,40,DARKGRAY);
+				puthz(280,404,"µÇÂ¼",32,40,DARKGRAY);		//puthz "login"
 				num = 3;
 			} 
 			continue;
@@ -68,15 +70,15 @@ int p0(void)
 				{
 					case 1:
 						button(40,400,200,440,DARKGRAY,DARKGRAY);
-						puthz(80,404,"×¢²á",32,40,WHITE);
+						puthz(80,404,"×¢²á",32,40,WHITE);			//puthz "register"
 						break;
 					case 2:
 						button(440,400,600,440,DARKGRAY,DARKGRAY);
-						puthz(480,404,"ÍË³ö",32,40,WHITE);
+						puthz(480,404,"ÍË³ö",32,40,WHITE);			//puthz "quit"
 						break;
 					case 3:
 						button(240,400,400,440,DARKGRAY,DARKGRAY);
-						puthz(280,404,"µÇÂ¼",32,40,WHITE);
+						puthz(280,404,"µÇÂ¼",32,40,WHITE);			//puthz "login"
 						break;	
 				}
 				num = 0;

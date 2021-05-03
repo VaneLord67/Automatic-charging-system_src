@@ -33,73 +33,73 @@ int main(void)
 	{
 		switch(page)
 		{
-			case 0:   //初始界面
+			case 0:   //open screen 初始界面
 				//每到初始界面就重新生成一辆车，防止两个用户对同一个内存进行操作
 				free(pCar);
 				PCAR pCar = (PCAR)malloc(sizeof(CAR));
 				initCar(pCar);			//初始化汽车参数
 				page = p0();
 				break;
-			case 1:   //注册界面
+			case 1:   //register screen 注册界面
 				page = p1(pCar);
 				break;
-			case 2:   //登录界面
+			case 2:   //login screen 登录界面
 				page = p2(pCar);
 				break;
 			case 3:  //退出
-				if(pCar->loginFlag == 1 && pCar->isAdmin == 0)		//如果登陆过才写记录
+				if(pCar->loginFlag == 1 && pCar->isAdmin == 0)		//write record if has logined 如果登陆过才写记录
 				{
 					recordWrite(pCar->id,pCar);
 				}
-				if(pCar->isAdmin == 0)			//用户写文件
+				if(pCar->isAdmin == 0)			//if is common user,write carinfo 用户写文件
 				{
-					carInfoWrite(pCar);		//将汽车信息写到carinfo.txt中
+					carInfoWrite(pCar);		//write car info into carinfo.txt 将汽车信息写到carinfo.txt中
 				}
 				free(pCar);				//退出前释放堆内存
 				closegraph();
 				delay(1000);			//delay防止鼠标出现连点Bug
 				exit(0);
 			case 4:
-				page = p4(pCar);	//数据显示界面
+				page = p4(pCar);	//show data 数据显示界面
 				break;
 			case 5:
-				page = p5(pCar);		//中控模块
+				page = p5(pCar);		//center control 中控模块
 				break;
 			case 6:
-				page = p6(pCar);		//里程计算器
+				page = p6(pCar);		//cal 里程计算器
 				break;
 			case 8:
-				page = p8();			//个人中心（有行驶记录查询功能）
+				page = p8();			//personal center 个人中心
 				break;
 			case 9:
-				page = p9(pCar);			//行驶记录查询
+				page = p9(pCar);			//driving record query 行驶记录查询
 				break;
-			case 10:					//一键充电界面
+			case 10:					//charge elec 一键充电界面
 				page = p10(pCar);
 				break;
-			case 11:					//一键换电界面
+			case 11:					//change 一键换电界面
 				page = p11(pCar);
 				break;
-			case 12:					//地图移动界面
+			case 12:					//map 地图移动界面
 				page = p12(pCar);
 				break;
 			case 13:					
-				page = p13(pCar);		//管理员界面
+				page = p13(pCar);		//admin 管理员界面
 				break;
 			case 14:
-				page = p14(pCar);		//充值界面
+				page = p14(pCar);		//charge money 充值界面
 				break;
 			case 15:
-				page = p15(pCar);		//充电金额计算界面
+				page = p15(pCar);		//cal charge money 充电金额计算界面
 				break;
 			case 16:
-				page = p16(pCar);		//换电金额计算界面
+				page = p16(pCar);		//cal change money换电金额计算界面
 				break;
 			case 17:
-				page = p17(pCar);       //充电记录查询界面 
+				page = p17(pCar);       //charge record query 充电记录查询界面 
 				break;
 			default:
-				page = 0;			//出现其他异常情况退回到初始界面
+				page = 0;			//default trun to page0 出现其他异常情况退回到初始界面
 				break;
 			
 		}
@@ -116,6 +116,7 @@ int main(void)
 void initCar(PCAR pCar)
 {
 	//读取carinfo.txt中的剩余电量
+	//read left elec from carinfo.txt
 	FILE * fp = NULL;
 	char temp[80] = {'\0'};
 	fp = fopen("carinfo.txt","r");
@@ -132,11 +133,11 @@ void initCar(PCAR pCar)
 
 	if(pCar->x == 0 || pCar->y == 0)
 	{
-		pCar->x = 240;
-		pCar->y = 240;
+		pCar->x = 217;
+		pCar->y = 405;
 	}
 
-	pCar->hasMileage = 0;			//行驶里程
+	pCar->hasMileage = 0;			//行驶里程		
 	pCar->airConditioningFlag = 0; //空调状态
 	pCar->lightFlag = 0;			//车灯状态
 	pCar->windowFlag = 0;			//车窗状态

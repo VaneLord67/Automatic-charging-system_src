@@ -1,23 +1,6 @@
-#ifndef _MY_MOUSE_TEST_H_
-#define _MY_MOUSE_TEST_H_
+#ifndef _MY_MOUSE_H_
+#define _MY_MOUSE_H_
 
-#include<graphics.h>
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#include<dos.h>
-#include<bios.h>
-#include<string.h>
-#include<malloc.h>
-#include<math.h>
-#include"mouse.h"
-#include<stdio.h>
-#include<math.h>
-#include<malloc.h>
-#include<string.h>
-#include<stdlib.h>
-
-#include"hz.h"
 #include"myf.h"
 
 /*

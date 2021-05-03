@@ -35,8 +35,9 @@ int p1(PCAR pCar)
 	while(page == 1)
 	{
 		newmouse(&mouseX,&mouseY,&press);
-
+		#ifdef SHOWMOUSE
 		showMousePos();
+		#endif
 		
 		if(1 == isInUserText)
 		{
@@ -140,6 +141,15 @@ void page1_screen(void)
 	cleardevice();
 	setbkcolor(LIGHTCYAN);
 	setcolor(DARKGRAY);
+	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+	circle(40,100,13);
+	line(20,140,60,140);
+	line(20,140,33,111);
+	line(60,140,47,111);            //用户图标 
+	circle(41,241,14);
+	line(40,240-13,40,195);
+	line(40,195,55,195);
+	line(40,205,55,205);            //密码图标 
 	setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 	rectangle(79,77,223,148);
 	rectangle(246,77,567,148);
