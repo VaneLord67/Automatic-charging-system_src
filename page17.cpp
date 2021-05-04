@@ -1,5 +1,5 @@
 //管理员电量查询界面
-
+//admin elec query
 #include"page17.h" 
 
 /*
@@ -43,7 +43,7 @@ int p17(PCAR pCar)
 		showMousePos();
 		#endif
 		
-		if(mouse_press(140,350,186,390) == 1)			//减少页数
+		if(mouse_press(140,350,186,390) == 1)			//减少页数 (page -1)
 		{
 			if(pageCurrent > 1)
 			{
@@ -73,17 +73,17 @@ int p17(PCAR pCar)
 			}
 		}
 		
-		if(mouse_press(432,350,487,390) == 1)			//增加页数
+		if(mouse_press(432,350,487,390) == 1)			//增加页数 (page +1)
 		{
 			if(pageCurrent < maxPage)
 			{
 				pageCurrent += 1;
 				setfillstyle(SOLID_FILL,BLACK);
-				bar(20,90,383,347);				//刷新界面
+				bar(20,90,383,347);				//刷新界面 (refresh screen)
 
 				findRecordForElec(pageCurrent,max);
 
-				bar(209,360,310,388);			//刷新当前页数
+				bar(209,360,310,388);			//刷新当前页数 (refresh page)
 				sprintf(pageCurrentString,"%d",pageCurrent);
 				printText_withoutRec(210,360,pageCurrentString,3,DARKGRAY);
 				delay(200);
@@ -92,11 +92,11 @@ int p17(PCAR pCar)
 			{
 				pageCurrent = 1;
 				setfillstyle(SOLID_FILL,BLACK);
-				bar(20,90,383,347);				//刷新界面
+				bar(20,90,383,347);				//刷新界面 (refresh screen)
 				
 				findRecordForElec(pageCurrent,max);
 				
-				bar(209,360,310,388);			//刷新当前页数
+				bar(209,360,310,388);			//刷新当前页数 (refresh page)
 				sprintf(pageCurrentString,"%d",pageCurrent);
 				printText_withoutRec(210,360,pageCurrentString,3,DARKGRAY);
 				delay(200);
@@ -104,12 +104,12 @@ int p17(PCAR pCar)
 			}
 		}
 		
-		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出
+		if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出 (exit)
 		{
 			page = 3;
 		}
 		
-		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//返回
+		if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//返回 (back)
 		{
 			page = 13;
 		}

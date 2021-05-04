@@ -1,5 +1,5 @@
 //管理员登陆后界面
-
+//admin screen
 #include"page13.h"
 
 /*
@@ -26,22 +26,22 @@ int p13(PCAR pCar)
 
         newmouse(&mouseX,&mouseY,&press);
 
-        if(mouse_press(215,152,429,184) == 1)       //行驶记录查询
+        if(mouse_press(215,152,429,184) == 1)       //行驶记录查询 (record)
         {
             page = 9;
         }
         
-        if(mouse_press(215,242,429,274) == 1)       //电量记录查询
+        if(mouse_press(215,242,429,274) == 1)       //电量记录查询 (elec)
         {
             page = 17;
         }
 
-        if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出
+        if(mouse_press(390,408,400+48*2*1.1+2,408+48) == 1)			//退出 (exit)
         {
             page = 3;
         }
 			
-        if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//注销
+        if(mouse_press(112,408,122+48*2*1.1+2,408+48) == 1)			//注销 (back)
         {
             pCar->loginFlag = 0;
             page = 0;
@@ -80,16 +80,16 @@ void page13_screen()
     setlinestyle(SOLID_LINE,0,NORM_WIDTH);
 
 	printHZ_withoutRec(200,20,"管理员界面",48,DARKGRAY);
-    printHZ(215,150,"行驶记录查询",32,DARKGRAY);
-    printHZ(215,240,"充电记录查询",32,DARKGRAY);
+    printHZ(215,150,"行驶记录查询",32,DARKGRAY);//record
+    printHZ(215,240,"充电记录查询",32,DARKGRAY);//elec
     
     setfillstyle(SOLID_FILL,DARKGRAY);
 	bar(112,408,122+48*2*1.1+2,408+48);
 	bar(390,408,400+48*2*1.1+2,408+48);
 	floodfill(123,409,DARKGRAY); 
 	floodfill(401,409,DARKGRAY);
-	printHZ(122, 408,"注销",48,WHITE);
-	printHZ(400, 408,"退出",48,WHITE);
+	printHZ(122, 408,"注销",48,WHITE);//back
+	printHZ(400, 408,"退出",48,WHITE);//exit
 
     return;
 }

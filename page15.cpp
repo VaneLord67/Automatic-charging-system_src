@@ -1,7 +1,7 @@
 /////////////////
 //充电金额计算界面
 ////////////////
-
+//charge money cal
 #include"page15.h"
 
 /*
@@ -75,27 +75,27 @@ int p15(PCAR pCar)
                 isInDestElec = 0;
             }
 
-            if(mouse_press(122,230,520,190+85) == 1)       //点击目标电量输入框
+            if(mouse_press(122,230,520,190+85) == 1)       //点击目标电量输入框 (destin elec)
             {
                 isInDestElec = 1;
             }
             
-            if(mouse_press(401,409,508,459) == 1)			//取消
+            if(mouse_press(401,409,508,459) == 1)			//取消 (no)
             {
                 page = 4;
             }
 
-            if(mouse_press(325,232,485,277) == 1)                          //点击计算金额
+            if(mouse_press(325,232,485,277) == 1)                          //点击计算金额 (check)
             {
                 delay(200);
                 if(testStringIsFloat(desetElecText) == 0)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法");  //elec error
                     continue;
                 }
                 if(atof(desetElecText) <=0 || atof(desetElecText) > MAX_ELECTRICITY || atof(desetElecText) <= pCar->electricityLeft)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法"); //elec error
                     continue;
                 }
 
@@ -110,31 +110,30 @@ int p15(PCAR pCar)
 
             }
                 
-            if(mouse_press(123,409,230,459) == 1)			//确定
+            if(mouse_press(123,409,230,459) == 1)			//确定 (yes)
             {
                 if(strlen(desetElecText) <= 0)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"电量非法");  //elec error
                     continue;
                 }
                 destElec = atof(desetElecText);
                 
                 if(calMoney != (destElec-pCar->electricityLeft) * PRICE_PER_KWH)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"请计算金额");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"请计算金额"); //plz check
                     setfillstyle(SOLID_FILL,BLACK);
                     bar(180,140,472,215);
-                    printHZ_withoutRec(195, 150,"请计算金额",48,DARKGRAY);
+                    printHZ_withoutRec(195, 150,"请计算金额",48,DARKGRAY); //plz check
                     continue;
                 }
                 if(pCar->balance < calMoney)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"余额不足");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"余额不足"); //no money
                     continue;
                 }
-                //pCar->balance -= calMoney;        //扣费到充电中止时再扣
                 pCar->destElec = destElec;
-                page = 10;          //转到充电界面
+                page = 10;          //转到充电界面 (turn to charge page)
             }
 
         }

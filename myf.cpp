@@ -172,7 +172,7 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 					(*x_input) -= 25;
 					clrmous(mouseX,mouseY);
 					setfillstyle(SOLID_FILL,BLACK);
-					bar((*x_input),(*y_input),(*x_input)+20,(*y_input)+24);
+					bar((*x_input),(*y_input),(*x_input)+23,(*y_input)+24);
 					save_bk_mou(mouseX,mouseY);
 					drawmous(mouseX,mouseY);
 					if((*x_input) <= 5)
@@ -183,7 +183,7 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 							(*y_input) -= 30;
 						}
 					}
-					
+
 				}
 				break;
 			case 13:						//enter 回车
@@ -208,7 +208,7 @@ void inputText(int * x_input, int * y_input,int * inputFlag,int * inputLength, c
 						drawmous(mouseX,mouseY);
 
 						(*x_input) += 25;
-					}					
+					}
 				}
 				break;
 		}
@@ -227,8 +227,8 @@ void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inpu
 	//int maxLength = 12; //文本输入最大长度12
 	if(kbhit() != 0)
 	{
-		int ch = 0;			
-		char textTemp[1] = {'\0'};	
+		int ch = 0;
+		char textTemp[1] = {'\0'};
 		ch = getch();
 		switch(ch)
 		{
@@ -240,7 +240,7 @@ void inputTextWithLength(int * x_input, int * y_input,int * inputFlag,int * inpu
 					(*x_input) -= 25;
 					clrmous(mouseX,mouseY);
 					setfillstyle(SOLID_FILL,BLACK);
-					bar((*x_input),(*y_input),(*x_input)+20,(*y_input)+24);
+					bar((*x_input),(*y_input),(*x_input)+23,(*y_input)+24);
 					save_bk_mou(mouseX,mouseY);
 					drawmous(mouseX,mouseY);
 					if((*x_input) <= 5)
@@ -608,7 +608,7 @@ int testStringIsFloat(char * str)
 
 /*
 函数名：button
-功能：按钮阴影效果
+功能：按钮阴影效果(shadow)
 入口参数：鼠标坐标，颜色
 返回值：void
 */

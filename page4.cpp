@@ -1,7 +1,7 @@
 /////////////////
 //数据显示界面
 ////////////////
-
+//data show
 #include"page4.h"
 
 /*
@@ -129,7 +129,7 @@ int p4(PCAR pCar)
 				total = (double)(pCar->temp - pCar->start) / CLOCKS_PER_SEC;
 				if(total >= 5)
 				{
-					pCar->electricityLeft -= (2.0) / (pCar->k + pCar->kEquipment);
+					pCar->electricityLeft -= (2.0 * (total / 5)) / (pCar->k + pCar->kEquipment);
 					if(pCar->electricityLeft < 0)
 					{
 						pCar->electricityLeft = 0;

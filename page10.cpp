@@ -1,7 +1,7 @@
 /////////////////
 //一键充电界面
 ////////////////
-
+//charge elec
 #include"page10.h"
 
 
@@ -32,7 +32,7 @@ int p10(PCAR pCar)
 	// int chargeTemp;
 	// int total = 0;
 	
-	double percentage = (double)pCar->electricityLeft / MAX_ELECTRICITY;		//充电百分比
+	double percentage = (double)pCar->electricityLeft / MAX_ELECTRICITY;		//充电百分比 (elec percentage)
 	
 	change_page(page10_screen);
 	
@@ -66,7 +66,7 @@ int p10(PCAR pCar)
 	setfillstyle(SOLID_FILL,YELLOW);
 	floodfill(160,190,DARKGRAY);
 	line(150,240,150,360);
-	line(170,240,170,360);   //充电桩
+	line(170,240,170,360);   //充电桩chong dian zhuang
 	line(80,360,560,360);
 	
 	int a[] = {400,270,400,330,540,330,540,270,530,270,500,210,440,210,410,270,400,270};
@@ -80,7 +80,7 @@ int p10(PCAR pCar)
 	line(430,330,430,360);
 	line(445,330,445,360);
 	line(495,330,495,360);
-	line(510,330,510,360);    //汽车
+	line(510,330,510,360);    //汽车car
 	
 	line(220,180,250,180);
 	line(220,200,250,200);
@@ -89,7 +89,7 @@ int p10(PCAR pCar)
 	ellipse(370,250,180,270,50,50);
 	ellipse(370,250,180,270,70,70);
 	line(400,300,370,300);
-	line(400,320,370,320);     //输电管道
+	line(400,320,370,320);     //输电管道guan dao
 	
 	printHZ_withoutRec(160,370,"正在配置充电设置。。。",24,DARKGRAY);
 	delay(100); 
@@ -109,7 +109,7 @@ int p10(PCAR pCar)
 	delay(100);
 	drawcircle(362,310);
 	delay(100);
-	drawcircle(385,310);             //电量输送动画 
+	drawcircle(385,310);             //电量输送动画 dong hua
 	
 	
 	
@@ -148,7 +148,7 @@ int p10(PCAR pCar)
 	//进度条
 	setcolor(DARKGRAY);
 	rectangle(380,140,560,170);	
-	printHZ_withoutRec(420,180,"电量状态",24,DARKGRAY);			//充电进度条边框
+	printHZ_withoutRec(420,180,"电量状态",24,DARKGRAY);			//充电进度条边框 jindu tiao
 	
 	setfillstyle(SOLID_FILL,GREEN);
 	bar(380,140,(560-380)*percentage+380,170);
@@ -187,7 +187,7 @@ int p10(PCAR pCar)
 					// updateBalance(pCar);
 					elecBefore = &elecStart;
 					CarElecWrite_charge(pCar->id, pCar, elecBefore);                                                                                    
-					popWindow_withoutFlush(&p, &isPopWindow, "充电完成");
+					popWindow_withoutFlush(&p, &isPopWindow, "充电完成");  //success
 					continue;
 				}
 
@@ -218,21 +218,21 @@ int p10(PCAR pCar)
 				start = clock();
 			}
 			
-			if(mouse_press(401,409,508,459) == 1)			//退出
+			if(mouse_press(401,409,508,459) == 1)			//退出 exit
 			{
 				page = 3;
 			}
 			
-			if(mouse_press(123,409,230,459) == 1)			//中止
+			if(mouse_press(123,409,230,459) == 1)			//中止 stop
 			{
 				popWindow_withoutFlush(&p, &isPopWindow, "充电中止");
-				page = 4;
+				//page = 4;
 			}
-				
+
 		}
 		else
 		{
-			popWindow_withoutFlush(&p, &isPopWindow, "");	
+			popWindow_withoutFlush(&p, &isPopWindow, "");
 			if(0 == isPopWindow)
 			{
 				pCar->balance -= hasPayMoney;
@@ -240,7 +240,7 @@ int p10(PCAR pCar)
 				page = 4;
 			}
 		}
-		
+
 	}
 	
 	return page;
@@ -262,8 +262,8 @@ void page10_screen(void)
 	printHZ_withoutRec(68,85,"已花费金额：",32,DARKGRAY);
 	printHZ_withoutRec(450,85,"元",32,DARKGRAY);
 	
-	printHZ(122, 408,"中止",48,DARKGRAY);
-	printHZ(400, 408,"退出",48,DARKGRAY);
+	printHZ(122, 408,"中止",48,DARKGRAY);  //stop
+	printHZ(400, 408,"退出",48,DARKGRAY);  //exit
 	return;
 }
 

@@ -1,7 +1,7 @@
 /*
 登录界面
 */
-
+//login
 #include"page2.h"
 
 /*
@@ -62,25 +62,25 @@ int p2(PCAR pCar)
 				isInUserText = 0;
 			}
 			
-			if(mouse_press(237,303,388,380) == 1)      //点击返回按钮
+			if(mouse_press(237,303,388,380) == 1)      //点击返回按钮   (back)
 			{
 				page = 0;
 			}
-			else if(mouse_press(427,303,564,380) == 1)        //点击退出按钮
+			else if(mouse_press(427,303,564,380) == 1)        //点击退出按钮     (exit)
 			{
 				page = 3;
 			}
-			else if(mouse_press(246,77,567,148) == 1) 		//点击用户名输入框
-			{
+			else if(mouse_press(246,77,567,148) == 1) 		//点击用户名输入框  (admin)
+			{ 
 				isInPasswordText = 0;
 				isInUserText = 1;
 			}
-			else if(mouse_press(246,190,567,260) == 1)			//点击密码输入框
+			else if(mouse_press(246,190,567,260) == 1)			//点击密码输入框  (password)
 			{
 				isInUserText = 0;
 				isInPasswordText = 1;
 			}
-			else if(mouse_press(47,303,198,380) == 1) 			//点击登录框
+			else if(mouse_press(47,303,198,380) == 1) 			//点击登录框  (login)
 			{			
 				if( (loginFlag = Login(userText,passwordText,adminMode,pCar)) == 1 )
 				{
@@ -92,14 +92,14 @@ int p2(PCAR pCar)
 					strcpy(pCar->id,userText);
 					// recordIn(userText,pCar);
 					pCar->loginFlag = 1;
-					popWindow(page2_screen,&isPopWindow,"登录成功");
+					popWindow(page2_screen,&isPopWindow,"登录成功");       //success
 				}
 				else
 				{
-					popWindow(page2_screen,&isPopWindow,"登录失败");
+					popWindow(page2_screen,&isPopWindow,"登录失败");      //fail
 				}	
 			}
-			else if(mouse_press(434,423,490,470) == 1)			//点击管理员模式
+			else if(mouse_press(434,423,490,470) == 1)			//点击管理员模式   (admin)
 			{
 				delay(200);
 				clrmous(mouseX,mouseY);

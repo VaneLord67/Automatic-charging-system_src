@@ -1,7 +1,7 @@
 /////////////////
 //一键换电界面
 ////////////////
-
+//change elec
 #include"page11.h"
 
 /*
@@ -21,11 +21,11 @@ int p11(PCAR pCar)
 	void * buf = NULL;
 	unsigned int size = 0;
 	int page = 11;
-	int start = clock();			//起始时间
-	int temp;			//临时时间
-	double total = 0; 	//时间之差
+	int start = clock();			//起始时间 (time start)
+	int temp;			//临时时间 (now time)
+	double total = 0; 	//时间之差 (time gap)
 	int i = 0;
-	double elecStart = pCar->electricityLeft;	//充电初始电量
+	double elecStart = pCar->electricityLeft;	//充电初始电量 (elec start)
 	double *elecBefore = NULL;
 
 	change_page(page11_screen);
@@ -56,14 +56,14 @@ int p11(PCAR pCar)
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	setfillstyle(SOLID_FILL,LIGHTCYAN);
 	line(1,363,639,363);
-	rectangle(300,80,540,363);                                 //换电站
+	rectangle(300,80,540,363);                                 //换电站 huandian zhan
 	printHZ_withoutRec(340,90,"换电站",48,DARKGRAY);
 	
 	printHZ_withoutRec(50,90,"电量状态",48,DARKGRAY);
 	rectangle(60,150,240,170);
 	setfillstyle(SOLID_FILL,RED);
 	floodfill(63,153,DARKGRAY);
-	setfillstyle(SOLID_FILL,LIGHTCYAN);                       //电亮状态栏 
+	setfillstyle(SOLID_FILL,LIGHTCYAN);                       //电量状态栏  zhuangtai lan
 	
 	setlinestyle(SOLID_LINE,0,THICK_WIDTH);
 	circle(140,345,15);
@@ -76,7 +76,7 @@ int p11(PCAR pCar)
 	int b[] = {135,300,150,270,175,270,175,300,135,300};
 	drawpoly(5,b);
 	int c[] = {185,300,185,270,210,270,225,300,185,300};
-	drawpoly(5,c);                                             //汽车
+	drawpoly(5,c);                                             //汽车  car
 	
 	delay(1000);
 	
@@ -111,7 +111,7 @@ int p11(PCAR pCar)
 				break;
 			}
 		}	
-	}                                                 //汽车行驶动画 
+	}                                                 //汽车行驶动画  donghua
 	
 	delay(500);
 	bar(1,370,639,480);
@@ -126,7 +126,7 @@ int p11(PCAR pCar)
 	line(380+5,320,380+5,361);	
 	line(380-5,320,380-5,361);
 	line(460+5,320,460+5,361);
-	line(460-5,320,460-5,361);                      //汽车从平台升起 
+	line(460-5,320,460-5,361);                      //汽车从平台升起  car up
 	
 	delay(1000);
 	bar(1,370,639,480);
@@ -149,7 +149,7 @@ int p11(PCAR pCar)
 	delay(500);
 	putimage(409,320,buf,1);
 	putimage(409,304,buf,0);
-	line(420,340,420,316);                         //机械臂升起 
+	line(420,340,420,316);                         //机械臂升起   hand up
 	
 	delay(1000);
 	floodfill(63,153,DARKGRAY);
@@ -167,7 +167,7 @@ int p11(PCAR pCar)
 	putimage(404,319,buf,1);
 	putimage(404,340,buf,0);
 	delay(500);
-	putimage(404,340,buf,1);                        //取出要更换的电池
+	putimage(404,340,buf,1);                        //取出要更换的电池  take out elec
 	
 	bar(1,370,639,480);
 	
@@ -193,7 +193,7 @@ int p11(PCAR pCar)
 	putimage(404,301,buf,0);
 	free(buf);
 	line(420,340,420,316);     
-	line(404,301,435,301);                                    //更换新电池
+	line(404,301,435,301);                                    //更换新电池 change elec
 	
 	delay(500);
 	
@@ -215,7 +215,7 @@ int p11(PCAR pCar)
 	setcolor(LIGHTCYAN);
 	line(420,320,420,363);
 	setcolor(DARKGRAY);
-	line(400,363,440,363);                                    //机械臂降下
+	line(400,363,440,363);                                    //机械臂降下   hand down
 	
 	bar(1,370,639,480);
 	delay(500);
@@ -230,7 +230,7 @@ int p11(PCAR pCar)
 	getimage(99+i,239-43,261+i,361-43,buf);
 	putimage(99+i,239-43,buf,1);
 	putimage(99+i,239,buf,0);
-	free(buf);                                               //汽车降下 
+	free(buf);                                               //汽车降下   car down
 	
 	delay(1000);
 	bar(1,370,639,480);
@@ -266,7 +266,7 @@ int p11(PCAR pCar)
 				break;
 			}
 		}	
-	}                                                    //汽车驶出换电站 
+	}                                                    //汽车驶出换电站   car out
 	
 	bar(1,370,639,480);
 	delay(1000);
@@ -326,7 +326,7 @@ int p11(PCAR pCar)
 			{
 				elecBefore = &elecStart;
 				CarElecWrite_change(pCar->id, pCar, elecBefore);    
-				popWindow_withoutFlush(&p, &isPopWindow, "换电完成");	
+				popWindow_withoutFlush(&p, &isPopWindow, "换电完成");	//success
 			}
 					
 			// if(mouse_press(401,409,508,459) == 1)			//退出

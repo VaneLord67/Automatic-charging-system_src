@@ -1,7 +1,7 @@
 /////////////////
 //换电金额计算界面
 ////////////////
-
+//change money cal
 #include"page16.h"
 #include"page14.h"
 
@@ -46,20 +46,20 @@ int p16(PCAR pCar)
 
         if(0 == isPopWindow)
         {
-            if(mouse_press(401,409,508,459) == 1)			//取消
+            if(mouse_press(401,409,508,459) == 1)			//取消 (no)
             {
                 page = 4;
             }
-            if(mouse_press(123,409,230,459) == 1)			//确定
+            if(mouse_press(123,409,230,459) == 1)			//确定 (yes)
             {
                 if(pCar->balance < calMoney)
                 {
-                    popWindow_withoutFlush(&buf,&isPopWindow,"余额不足");
+                    popWindow_withoutFlush(&buf,&isPopWindow,"余额不足"); //no money
                     continue;
                 }
                 pCar->balance -= calMoney;
                 updateBalance(pCar);
-                page = 11;          //转到换电界面
+                page = 11;          //转到换电界面 (turn to elec-change page)
             }
 
         }

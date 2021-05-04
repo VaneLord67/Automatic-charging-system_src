@@ -1,5 +1,5 @@
 //page5 ÖĞ¿Ø½çÃæ
-
+//center controll
 #include"page5.h"
 
 /*

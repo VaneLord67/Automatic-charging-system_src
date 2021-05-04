@@ -1,7 +1,7 @@
 /////////////////
 //充值界面
 ////////////////
-
+//charge balance
 #include"page14.h"
 
 /*
@@ -71,28 +71,28 @@ int p14(PCAR pCar)
                 isInBalance = 0;
 			}
 
-            if(mouse_press(122,140,520,185) == 1)       //点击卡号输入框
+            if(mouse_press(122,140,520,185) == 1)       //点击卡号输入框 (card)
             {
                 isInCardID = 1;
                 isInPassword = 0;
                 isInBalance = 0;
             }
 
-            if(mouse_press(122,230,520,190+85) == 1)       //点击密码输入框
+            if(mouse_press(122,230,520,190+85) == 1)       //点击密码输入框 (password)
             {
                 isInPassword = 1;
                 isInCardID = 0;
                 isInBalance = 0;
             }
 
-            if(mouse_press(122,230+90,520,190+85+90) == 1)       //点击金额输入框
+            if(mouse_press(122,230+90,520,190+85+90) == 1)       //点击金额输入框 (money)
             {
                 isInBalance = 1;
                 isInCardID = 0;
                 isInPassword = 0;
             }	
 		
-            if(mouse_press(261,408,261+48*2*1.1+2,408+48) == 1)       //点击充值
+            if(mouse_press(261,408,261+48*2*1.1+2,408+48) == 1)       //点击充值 (pay in)
             {
                 if(strlen(cardIDText) == 0)
                 {
@@ -126,7 +126,7 @@ int p14(PCAR pCar)
 				
 				if((isPayFlag = card_check(cardIDText,passwordText)) == 1)
                	{
-               		popWindow_withoutFlush(&buf,&isPopWindow,"充值成功");
+               		popWindow_withoutFlush(&buf,&isPopWindow,"充值成功"); //success
                		pCar->balance += atof(balanceText);
                		updateBalance(pCar);
                		isPayFlag = 1;
@@ -134,18 +134,18 @@ int p14(PCAR pCar)
 				}
 				else
 				{
-					popWindow_withoutFlush(&buf,&isPopWindow,"充值失败");
+					popWindow_withoutFlush(&buf,&isPopWindow,"充值失败"); //fail
 				}
                 continue;
             }
 					
 
-            if(mouse_press(400,408,400+48*2*1.1+2,408+48) == 1)			//退出
+            if(mouse_press(400,408,400+48*2*1.1+2,408+48) == 1)			//退出 (exit)
             {
                 page = 3;
             }
             
-            if(mouse_press(122,408,122+48*2*1.1+2,408+48) == 1)			//返回
+            if(mouse_press(122,408,122+48*2*1.1+2,408+48) == 1)			//返回 (back)
             {
                 page = 4;
             }
@@ -231,17 +231,16 @@ void updateBalance(PCAR pCar)
     {
         if ((temp[0] == 'I') && (temp[1] == 'D') && (temp[2] == ':'))
 		{
-            fprintf(fpTemp,"%s",temp);  //复制ID
+            fprintf(fpTemp,"%s",temp);  //复制ID (copy id)
 			strcpy(id_temp, temp + 3);
 			p = strchr(id_temp, '\n');
 			*p = '\0';
 			if (strcmp(id_temp, pCar->id) == 0 && hasUpdate == 0)
 			{
-				fgets(temp, 80, fp);        //执行后指到余额那一行
-                fprintf(fpTemp,"%s",temp);  //复制密码
-                fprintf(fpTemp,"BALANCE:%.2lf\n",pCar->balance);       //把最新余额写到缓存文件中
-                //fprintf(fpTemp,"BALANCE:0\n");       //把最新余额写到缓存文件中
-                fgets(temp,80,fp);          //跳过原文件余额这一行
+				fgets(temp, 80, fp);        //执行后指到余额那一行 (locate)
+                fprintf(fpTemp,"%s",temp);  //复制密码 (copy)
+                fprintf(fpTemp,"BALANCE:%.2lf\n",pCar->balance);       //把最新余额写到缓存文件中 (write)
+                fgets(temp,80,fp);          //跳过原文件余额这一行 (skip old)
                 hasUpdate = 1;
 			}
             // else

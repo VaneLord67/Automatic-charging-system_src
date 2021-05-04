@@ -1,7 +1,7 @@
 /////////////////
 //行驶记录查询界面
 ////////////////
-
+//driving record query
 #include"page9.h"
 
 /*

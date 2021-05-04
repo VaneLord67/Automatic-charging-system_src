@@ -1,6 +1,7 @@
 /*
 注册界面
 */
+//register
 
 #include"page1.h"
 
@@ -62,29 +63,30 @@ int p1(PCAR pCar)
 				isInUserText = 0;
 			}
 			
-			if(mouse_press(237,303,388,380) == 1)      //点击返回按钮
+			if(mouse_press(237,303,388,380) == 1)      //点击返回按钮  (back)
 			{
 				page = 0;
 			}
-			else if(mouse_press(427,303,564,380) == 1)        //点击退出按钮
+			else if(mouse_press(427,303,564,380) == 1)        //点击退出按钮  (exit)
 			{
 				page = 3;
 			}
-			else if(mouse_press(246,77,567,148) == 1) 		//点击用户名输入框
+			else if(mouse_press(246,77,567,148) == 1) 		//点击用户名输入框  (id)
 			{
 				isInPasswordText = 0;
 				isInUserText = 1;
 			}
-			else if(mouse_press(246,190,567,260) == 1)			//点击密码输入框
+			else if(mouse_press(246,190,567,260) == 1)			//点击密码输入框  (password)
 			{
 				isInUserText = 0;
 				isInPasswordText = 1;
 			}
-			else if(mouse_press(47,303,198,380) == 1) 			//点击注册框
+			else if(mouse_press(47,303,198,380) == 1) 			//点击注册框  (regsister)
 			{
 				if(check(userText,passwordText) == 0)
 				{
-					popWindow_withoutFlush(&buf, &isPopWindow, "格式错误");	
+					popWindow_withoutFlush(&buf, &isPopWindow, "格式错误");         // format error
+                    continue;
 				}
 				
 				if(Register(userText,passwordText,adminMode) == 1)
@@ -93,15 +95,15 @@ int p1(PCAR pCar)
 					{
 						pCar->isAdmin = 1;
 					}
-					popWindow_withoutFlush(&buf, &isPopWindow, "注册成功");
+					popWindow_withoutFlush(&buf, &isPopWindow, "注册成功");         //success
 								//注册成功后跳转数据显示界面
 				}
 				else
 				{
-					popWindow_withoutFlush(&buf, &isPopWindow, "注册失败");
+					popWindow_withoutFlush(&buf, &isPopWindow, "注册失败");         //fail
 				}
 			}
-			else if(mouse_press(434,423,490,470) == 1)			//点击管理员模式
+			else if(mouse_press(434,423,490,470) == 1)			//点击管理员模式  (admin mode) 
 			{
 				delay(200);
 				clrmous(mouseX,mouseY);
@@ -145,7 +147,7 @@ void page1_screen(void)
 	circle(40,100,13);
 	line(20,140,60,140);
 	line(20,140,33,111);
-	line(60,140,47,111);            //用户图标 
+	line(60,140,47,111);            //用户图标
 	circle(41,241,14);
 	line(40,240-13,40,195);
 	line(40,195,55,195);
