@@ -18,17 +18,17 @@ int main(void)
 	int graphDriver = VGA;
 	int graphMode = VGAHI;
 	int page = 0;
-	initgraph(&graphDriver,&graphMode,"C:\\BORLANDC\\BGI");
+	initgraph(&graphDriver,&graphMode,"..\\BORLANDC\\BGI");
 	initMouse();
 	delay(200);
 	//给一个汽车分配内存空间并初始化各个值，整个工程仅存在这一辆汽车
 	PCAR pCar = (PCAR)malloc(sizeof(CAR));
 	initCar(pCar);			//初始化汽车参数
-	
+
 	#ifdef DEBUGMODE
-	page = 0;		
+	page = 0;
 	#endif
-	
+
 	while(1)
 	{
 		switch(page)
@@ -83,7 +83,7 @@ int main(void)
 			case 12:					//map 地图移动界面
 				page = p12(pCar);
 				break;
-			case 13:					
+			case 13:
 				page = p13(pCar);		//admin 管理员界面
 				break;
 			case 14:
@@ -96,15 +96,15 @@ int main(void)
 				page = p16(pCar);		//cal change money换电金额计算界面
 				break;
 			case 17:
-				page = p17(pCar);       //charge record query 充电记录查询界面 
+				page = p17(pCar);       //charge record query 充电记录查询界面
 				break;
 			default:
 				page = 0;			//default trun to page0 出现其他异常情况退回到初始界面
 				break;
-			
+
 		}
 	}
-	
+
 }
 
 /*
